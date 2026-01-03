@@ -12,5 +12,18 @@ export type RegistrationField = {
 export type AccountRegistrationProps = {
   fields: RegistrationField[];
   passwordRules: PasswordRule[];
-//   onSubmit:
+  //   onSubmit:
+};
+
+export type PasswordFieldProps = {
+  field: RegistrationField;
+  passwordValue: string;
+  onPasswordChange: (text: string) => void;
+  passwordRules: PasswordRule[]; 
+};
+
+export type DateFieldProps = {
+  field: RegistrationField;
+  date: string;
+  onDateChange: (text: string) => void;
 };

@@ -1,17 +1,23 @@
-import { Button, View, TextInput, Text, StyleSheet } from "react-native";
-import { AccountRegistrationProps, RegistrationField } from "./types";
 import { useState } from "react";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
-import { PasswordRule } from "../PasswordStrengthMeter/types";
+import {
+  AccountRegistrationProps,
+  DateFieldProps,
+  PasswordFieldProps,
+  RegistrationField,
+} from "./types";
 
-export function AccountRegistration({ fields, passwordRules }: AccountRegistrationProps) {
+export function AccountRegistration({
+  fields,
+  passwordRules,
+}: AccountRegistrationProps) {
   const [password, setPassword] = useState("");
-  const [dateString, setDateString] = useState("");
+  const [date, setDate] = useState("");
 
   return (
     <View style={styles.container}>
       {fields.map((field) => {
-
         // Text fields
         if (field.type === "text") {
           return <TextFieldComponent key={field.id} field={field} />;
@@ -19,27 +25,28 @@ export function AccountRegistration({ fields, passwordRules }: AccountRegistrati
 
         // Password fields
         else if (field.type === "password") {
-          return <PasswordFieldComponent key={field.id} field={field} password={password} setPassword={setPassword} passwordRules={passwordRules} />;
+          if (field.type === "password") {
+            return (
+              <PasswordFieldComponent
+                key={field.id}
+                field={field}
+                passwordValue={password}
+                onPasswordChange={setPassword}
+                passwordRules={passwordRules}
+              />
+            );
+          }
         }
 
         // Date fields
         if (field.type === "date") {
-          return (
-            <View key={field.id} style={styles.fieldContainer}>
-              <Text style={styles.label}>{field.label}</Text>
-              
-              <TextInput
-                style={styles.input} // Nu ser den exakt ut som de andra fälten
-                placeholder={field.placeholder || "YYYY-MM-DD"}
-                keyboardType="numeric"
-                value={dateString}
-                onChangeText={(text) => setDateString(handleDateChange(text))}
-                maxLength={10} // Förhindrar att man skriver mer än YYYY-MM-DD
-              />
-            </View>
-          );
+          return <DateFieldComponent
+            key={field.id}
+            field={field}
+            date={date}
+            onDateChange={setDate}
+          />;
         }
-            
         return null;
       })}
 
@@ -59,31 +66,55 @@ function TextFieldComponent(props: { field: RegistrationField }) {
   );
 }
 
-function PasswordFieldComponent(props: { field: RegistrationField, password: string, setPassword: (pw: string) => void, passwordRules: PasswordRule[] }) {
-  return(
-    <View key={props.field.id} style={styles.fieldContainer}>
-      <Text style={styles.label}>{props.field.label}</Text>
+function PasswordFieldComponent({
+  field,
+  passwordValue,
+  onPasswordChange,
+  passwordRules,
+}: PasswordFieldProps) {
+  return (
+    <View style={styles.fieldContainer}>
+      <Text style={styles.label}>{field.label}</Text>
       <TextInput
         style={styles.input}
-        placeholder={props.field.placeholder}
-        secureTextEntry={true} 
-        value={password}
-        onChangeText={setPassword} 
+        placeholder={field.placeholder}
+        secureTextEntry={true}
+        value={passwordValue}
+        onChangeText={onPasswordChange}
       />
-      
-      <PasswordStrengthMeter
-        password={password}
-        rules={passwordRules}
+
+      <PasswordStrengthMeter password={passwordValue} rules={passwordRules} />
+    </View>
+  );
+}
+
+function DateFieldComponent({
+  field,
+  date,
+  onDateChange
+}: DateFieldProps) {
+  return (
+    <View key={field.id} style={styles.fieldContainer}>
+      <Text style={styles.label}>{field.label}</Text>
+
+      <TextInput
+        style={styles.input} 
+        placeholder={field.placeholder || "YYYY-MM-DD"}
+        keyboardType="numeric"
+        value={date}
+        onChangeText={(text) => onDateChange(handleDateChange(text))}
+        maxLength={10} 
       />
     </View>
   );
 }
+
 const handleDateChange = (text: string) => {
-  // 1. Ta bort allt som inte är siffror (om användaren råkar skriva bokstäver)
+  // Tar bort allt som inte är siffror
   const cleaned = text.replace(/\D/g, "");
-  
-  // 2. Bygg upp strängen med bindestreck
+
   let formatted = cleaned;
+
   if (cleaned.length > 4) {
     // Lägg till bindestreck efter ÅÅÅÅ
     formatted = `${cleaned.slice(0, 4)}-${cleaned.slice(4)}`;
@@ -93,7 +124,7 @@ const handleDateChange = (text: string) => {
     formatted = `${formatted.slice(0, 7)}-${formatted.slice(7, 9)}`;
   }
 
-  // 3. Uppdatera state (max 10 tecken: ÅÅÅÅ-MM-DD)
+  // Uppdatera state (max 10 tecken: ÅÅÅÅ-MM-DD)
   return formatted.slice(0, 10);
 };
 
@@ -129,9 +160,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  dateInputSmall: { 
-    marginHorizontal: 4, 
-    textAlign: "center", 
+  dateInputSmall: {
+    marginHorizontal: 4,
+    textAlign: "center",
     padding: 0,
-  }
+  },
 });
