@@ -1,28 +1,62 @@
-import { View, Text, StyleSheet } from "react-native";
-import { PasswordStrengthMeterProps } from "./types";
+import { StyleSheet, Text, View } from "react-native";
+import { PasswordStrengthProps, RuleComponentType } from "./types";
 
 export function PasswordStrengthMeter({
   password,
   rules,
-}: PasswordStrengthMeterProps) {
+  style,
+  icons,
+}: PasswordStrengthProps) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Password must</Text>
+    <View style={[styles.container, style?.container]}>
+      <Text style={[styles.title, style?.title]}>Password must</Text>
+      {rules.map((rule) => (
+        <RuleComponent
+          key={rule.id}
+          rule={rule}
+          password={password}
+          style={style?.ruleStyling}
+          icons={icons}
+        />
+      ))}
+    </View>
+  );
+}
 
-      {rules.map((rule) => {
-        const passed = rule.test(password);
-
-        return (
-          <View key={rule.id} style={styles.ruleRow}>
-            <Text style={[styles.icon, passed ? styles.ok : styles.fail]}>
-              {passed ? "✓" : "✗"}
-            </Text>
-            <Text style={passed ? styles.ok : styles.fail}>
-              {rule.label}
-            </Text>
-          </View>
-        );
-      })}
+function RuleComponent({
+  rule,
+  password,
+  passString = "✓",
+  failString = "✗",
+  style,
+  icons,
+}: RuleComponentType) {
+  const passed = rule.test(password);
+  return (
+    <View style={[styles.ruleRow, style?.ruleRow]}>
+      {icons ? (
+        <View>
+          {passed ? icons.passed : icons.failed}
+        </View>
+      ) : (
+        <Text
+          style={[
+            styles.icon,
+            passed
+              ? [styles.ok, style?.textPassed]
+              : [styles.fail, style?.textFailed],
+          ]}>
+          {passed ? passString : failString}
+        </Text>
+      )}
+      <Text
+        style={
+          passed
+            ? [styles.ok, style?.textPassed]
+            : [styles.fail, style?.textFailed]
+        }>
+        {rule.label}
+      </Text>
     </View>
   );
 }
@@ -50,5 +84,5 @@ const styles = StyleSheet.create({
   },
   fail: {
     color: "darkred",
-  }
+  },
 });

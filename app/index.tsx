@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { View, TextInput } from "react-native";
+import { Text, TextInput, View } from "react-native";
+import { AccountRegistration } from "../components/AccountRegistration/AccountRegistration";
 import { PasswordStrengthMeter } from "../components/PasswordStrengthMeter/PasswordStrengthMeter";
 
 export default function Index() {
@@ -7,6 +8,7 @@ export default function Index() {
 
   return (
     <View style={{ padding: 20 }}>
+      <Text>Password Strength Meter:</Text>
       <TextInput
         placeholder="Password"
         secureTextEntry={true}
@@ -18,10 +20,29 @@ export default function Index() {
           marginBottom: 8,
         }}
       />
-      
       <PasswordStrengthMeter
         password={password}
         rules={[
+          {
+            id: "length",
+            label: "Have at least 6 characters",
+            test: (pw) => pw.length >= 6,
+          },
+          {
+            id: "number",
+            label: "Include at least 1 number",
+            test: (pw) => /\d/.test(pw),
+          },
+        ]}
+      />
+      <Text style={{ marginTop: 20 }}>Account Registration:</Text>
+      <AccountRegistration
+        fields={[
+          { id: "email", label: "Email", type: "text" },
+          { id: "name", label: "Name", placeholder: "Enter your name", type: "text" },
+          { id: "password", label: "Password", type: "password" },
+        ]}
+        passwordRules={[
           {
             id: "length",
             label: "Have at least 6 characters",
