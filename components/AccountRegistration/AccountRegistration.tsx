@@ -2,6 +2,7 @@ import { Button, View, TextInput, Text, StyleSheet } from "react-native";
 import { AccountRegistrationProps, RegistrationField } from "./types";
 import { useState } from "react";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
+import { PasswordRule } from "../PasswordStrengthMeter/types";
 
 export function AccountRegistration({ fields, passwordRules }: AccountRegistrationProps) {
   const [password, setPassword] = useState("");
@@ -18,23 +19,7 @@ export function AccountRegistration({ fields, passwordRules }: AccountRegistrati
 
         // Password fields
         else if (field.type === "password") {
-          return (
-            <View key={field.id} style={styles.fieldContainer}>
-              <Text style={styles.label}>{field.label}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={field.placeholder}
-                secureTextEntry={true} 
-                value={password}
-                onChangeText={setPassword} 
-              />
-              
-              <PasswordStrengthMeter
-                password={password}
-                rules={passwordRules}
-              />
-            </View>
-          );
+          return <PasswordFieldComponent key={field.id} field={field} password={password} setPassword={setPassword} passwordRules={passwordRules} />;
         }
 
         // Date fields
@@ -45,7 +30,7 @@ export function AccountRegistration({ fields, passwordRules }: AccountRegistrati
               
               <TextInput
                 style={styles.input} // Nu ser den exakt ut som de andra fälten
-                placeholder="YYYY-MM-DD"
+                placeholder={field.placeholder || "YYYY-MM-DD"}
                 keyboardType="numeric"
                 value={dateString}
                 onChangeText={(text) => setDateString(handleDateChange(text))}
@@ -69,12 +54,30 @@ function TextFieldComponent(props: { field: RegistrationField }) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>{props.field.label}</Text>
-
       <TextInput placeholder={props.field.placeholder} style={styles.input} />
     </View>
   );
 }
 
+function PasswordFieldComponent(props: { field: RegistrationField, password: string, setPassword: (pw: string) => void, passwordRules: PasswordRule[] }) {
+  return(
+    <View key={props.field.id} style={styles.fieldContainer}>
+      <Text style={styles.label}>{props.field.label}</Text>
+      <TextInput
+        style={styles.input}
+        placeholder={props.field.placeholder}
+        secureTextEntry={true} 
+        value={password}
+        onChangeText={setPassword} 
+      />
+      
+      <PasswordStrengthMeter
+        password={password}
+        rules={passwordRules}
+      />
+    </View>
+  );
+}
 const handleDateChange = (text: string) => {
   // 1. Ta bort allt som inte är siffror (om användaren råkar skriva bokstäver)
   const cleaned = text.replace(/\D/g, "");
