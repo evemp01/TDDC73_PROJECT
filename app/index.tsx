@@ -44,7 +44,7 @@ export default function Index() {
       <AccountRegistration
         fields={[
           { id: "email1", label: "Email", type: "text" },
-          { id: "dob1", label: "Date of Birth", type: "date" },
+          { id: "dob1", label: "Date of Birth", placeholder:"ÅÅÅÅ-MM-DD", type: "date" },
           { id: "name1", label: "Name", placeholder: "Enter your name", type: "text" },
           { id: "p1", label: "Password", type: "password" },
         ]}

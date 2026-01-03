@@ -5,7 +5,7 @@ import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrength
 
 export function AccountRegistration({ fields, passwordRules }: AccountRegistrationProps) {
   const [password, setPassword] = useState("");
-  const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
+  const [dateString, setDateString] = useState("");
 
   return (
     <View style={styles.container}>
@@ -38,43 +38,23 @@ export function AccountRegistration({ fields, passwordRules }: AccountRegistrati
         }
 
         // Date fields
-        else if (field.type === "date") {
+        if (field.type === "date") {
           return (
             <View key={field.id} style={styles.fieldContainer}>
               <Text style={styles.label}>{field.label}</Text>
-
-              <View style={styles.dateInputGroup}>
-                <TextInput
-                  style={[styles.input, styles.dateInputSmall]}
-                  placeholder="YYYY"
-                  keyboardType="numeric"
-                  maxLength={4}
-                  onChangeText={(val) =>
-                    setBirthDate({ ...birthDate, year: val })
-                  }
-                />
-                <TextInput
-                  style={[styles.input, styles.dateInputSmall]}
-                  placeholder="MM"
-                  keyboardType="numeric"
-                  maxLength={2}
-                  onChangeText={(val) =>
-                    setBirthDate({ ...birthDate, month: val })
-                  }
-                />
-                <TextInput
-                  style={[styles.input, styles.dateInputSmall]}
-                  placeholder="DD"
-                  keyboardType="numeric"
-                  maxLength={2}
-                  onChangeText={(val) =>
-                    setBirthDate({ ...birthDate, day: val })
-                  }
-                />
-              </View>
+              
+              <TextInput
+                style={styles.input} // Nu ser den exakt ut som de andra fälten
+                placeholder="YYYY-MM-DD"
+                keyboardType="numeric"
+                value={dateString}
+                onChangeText={(text) => setDateString(handleDateChange(text))}
+                maxLength={10} // Förhindrar att man skriver mer än YYYY-MM-DD
+              />
             </View>
           );
         }
+            
         return null;
       })}
 
@@ -94,6 +74,25 @@ function TextFieldComponent(props: { field: RegistrationField }) {
     </View>
   );
 }
+
+const handleDateChange = (text: string) => {
+  // 1. Ta bort allt som inte är siffror (om användaren råkar skriva bokstäver)
+  const cleaned = text.replace(/\D/g, "");
+  
+  // 2. Bygg upp strängen med bindestreck
+  let formatted = cleaned;
+  if (cleaned.length > 4) {
+    // Lägg till bindestreck efter ÅÅÅÅ
+    formatted = `${cleaned.slice(0, 4)}-${cleaned.slice(4)}`;
+  }
+  if (cleaned.length > 6) {
+    // Lägg till bindestreck efter MM
+    formatted = `${formatted.slice(0, 7)}-${formatted.slice(7, 9)}`;
+  }
+
+  // 3. Uppdatera state (max 10 tecken: ÅÅÅÅ-MM-DD)
+  return formatted.slice(0, 10);
+};
 
 const styles = StyleSheet.create({
   container: {
