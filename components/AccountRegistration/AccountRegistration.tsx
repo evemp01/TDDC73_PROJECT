@@ -5,9 +5,12 @@ import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrength
 
 export function AccountRegistration({ fields, passwordRules }: AccountRegistrationProps) {
   const [password, setPassword] = useState("");
+  const [birthDate, setBirthDate] = useState({ year: '', month: '', day: '' });
+
   return (
     <View style={styles.container}>
       {fields.map((field) => {
+
         // Text fields
         if (field.type === "text") {
           return <TextFieldComponent key={field.id} field={field} />;
@@ -46,21 +49,27 @@ export function AccountRegistration({ fields, passwordRules }: AccountRegistrati
                   placeholder="YYYY"
                   keyboardType="numeric"
                   maxLength={4}
-                  onChangeText={(val) => console.log("År:", val)}
+                  onChangeText={(val) =>
+                    setBirthDate({ ...birthDate, year: val })
+                  }
                 />
                 <TextInput
                   style={[styles.input, styles.dateInputSmall]}
                   placeholder="MM"
                   keyboardType="numeric"
                   maxLength={2}
-                  onChangeText={(val) => console.log("Månad:", val)}
+                  onChangeText={(val) =>
+                    setBirthDate({ ...birthDate, month: val })
+                  }
                 />
                 <TextInput
                   style={[styles.input, styles.dateInputSmall]}
                   placeholder="DD"
                   keyboardType="numeric"
                   maxLength={2}
-                  onChangeText={(val) => console.log("Dag:", val)}
+                  onChangeText={(val) =>
+                    setBirthDate({ ...birthDate, day: val })
+                  }
                 />
               </View>
             </View>
