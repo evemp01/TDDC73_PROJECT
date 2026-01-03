@@ -3,16 +3,36 @@ import { AccountRegistrationProps, RegistrationField } from "./types";
 import { useState } from "react";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
 
-export function AccountRegistration({ fields }: AccountRegistrationProps) {
+export function AccountRegistration({ fields, passwordRules }: AccountRegistrationProps) {
+  const [password, setPassword] = useState("");
   return (
     <View style={styles.container}>
       {fields.map((field) => {
+        // Text fields
         if (field.type === "text") {
           return <TextFieldComponent key={field.id} field={field} />;
         }
-        // else if (field.type === "password") {
-        //   return <PasswordStrengthMeter key={field.id} password={password} passwordProps={passwordProps} />;
-        // }
+
+        // Password fields
+        if (field.type === "password") {
+          return (
+            <View key={field.id} style={styles.fieldContainer}>
+              <Text style={styles.label}>{field.label}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={field.placeholder}
+                secureTextEntry={true} // Döljer tecknen
+                value={password}
+                onChangeText={setPassword} // Uppdaterar lösenordet när man skriver
+              />
+              {/* Här lägger vi in din mätare och skickar med lösenordet + reglerna */}
+              <PasswordStrengthMeter
+                password={password}
+                rules={passwordRules}
+              />
+            </View>
+          );
+        }
         return null;
       })}
 

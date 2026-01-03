@@ -11,6 +11,6 @@ export type RegistrationField = {
 
 export type AccountRegistrationProps = {
   fields: RegistrationField[];
- // passwordProps?: PasswordStrengthProps[];
+  passwordRules: PasswordRule[];
 //   onSubmit:
 };
