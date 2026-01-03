@@ -1,4 +1,4 @@
-import { PasswordRule, PasswordStrengthProps } from "../PasswordStrengthMeter/types";
+import { PasswordRule } from "../PasswordStrengthMeter/types";
 
 export type RegistrationField = {
   id: string;

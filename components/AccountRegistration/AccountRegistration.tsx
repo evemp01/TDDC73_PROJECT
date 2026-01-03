@@ -14,22 +14,55 @@ export function AccountRegistration({ fields, passwordRules }: AccountRegistrati
         }
 
         // Password fields
-        if (field.type === "password") {
+        else if (field.type === "password") {
           return (
             <View key={field.id} style={styles.fieldContainer}>
               <Text style={styles.label}>{field.label}</Text>
               <TextInput
                 style={styles.input}
                 placeholder={field.placeholder}
-                secureTextEntry={true} // Döljer tecknen
+                secureTextEntry={true} 
                 value={password}
-                onChangeText={setPassword} // Uppdaterar lösenordet när man skriver
+                onChangeText={setPassword} 
               />
-              {/* Här lägger vi in din mätare och skickar med lösenordet + reglerna */}
+              
               <PasswordStrengthMeter
                 password={password}
                 rules={passwordRules}
               />
+            </View>
+          );
+        }
+
+        // Date fields
+        else if (field.type === "date") {
+          return (
+            <View key={field.id} style={styles.fieldContainer}>
+              <Text style={styles.label}>{field.label}</Text>
+
+              <View style={styles.dateInputGroup}>
+                <TextInput
+                  style={[styles.input, styles.dateInputSmall]}
+                  placeholder="YYYY"
+                  keyboardType="numeric"
+                  maxLength={4}
+                  onChangeText={(val) => console.log("År:", val)}
+                />
+                <TextInput
+                  style={[styles.input, styles.dateInputSmall]}
+                  placeholder="MM"
+                  keyboardType="numeric"
+                  maxLength={2}
+                  onChangeText={(val) => console.log("Månad:", val)}
+                />
+                <TextInput
+                  style={[styles.input, styles.dateInputSmall]}
+                  placeholder="DD"
+                  keyboardType="numeric"
+                  maxLength={2}
+                  onChangeText={(val) => console.log("Dag:", val)}
+                />
+              </View>
             </View>
           );
         }
@@ -80,4 +113,14 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 8,
   },
+
+  dateInputGroup: {
+    flexDirection: "row",
+  },
+
+  dateInputSmall: { 
+    marginHorizontal: 4, 
+    textAlign: "center", 
+    padding: 0,
+  }
 });
