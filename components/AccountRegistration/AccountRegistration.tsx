@@ -25,29 +25,31 @@ export function AccountRegistration({
 
         // Password fields
         else if (field.type === "password") {
-          if (field.type === "password") {
-            return (
-              <PasswordFieldComponent
-                key={field.id}
-                field={field}
-                passwordValue={password}
-                onPasswordChange={setPassword}
-                passwordRules={passwordRules}
-              />
-            );
-          }
+          return (
+            <PasswordFieldComponent
+              key={field.id}
+              field={field}
+              passwordValue={password}
+              onPasswordChange={setPassword}
+              passwordRules={passwordRules}
+            />
+          );
         }
 
         // Date fields
-        if (field.type === "date") {
-          return <DateFieldComponent
-            key={field.id}
-            field={field}
-            date={date}
-            onDateChange={setDate}
-          />;
+        else if (field.type === "date") {
+          return (
+            <DateFieldComponent
+              key={field.id}
+              field={field}
+              date={date}
+              onDateChange={setDate}
+            />
+          );
+        } else {
+          console.error(`Unknown field type: ${field.type}`);
+          return null;
         }
-        return null;
       })}
 
       <View style={styles.buttonContainer}>
@@ -88,22 +90,18 @@ function PasswordFieldComponent({
   );
 }
 
-function DateFieldComponent({
-  field,
-  date,
-  onDateChange
-}: DateFieldProps) {
+function DateFieldComponent({ field, date, onDateChange }: DateFieldProps) {
   return (
     <View key={field.id} style={styles.fieldContainer}>
       <Text style={styles.label}>{field.label}</Text>
 
       <TextInput
-        style={styles.input} 
+        style={styles.input}
         placeholder={field.placeholder || "YYYY-MM-DD"}
         keyboardType="numeric"
         value={date}
         onChangeText={(text) => onDateChange(handleDateChange(text))}
-        maxLength={10} 
+        maxLength={10}
       />
     </View>
   );
