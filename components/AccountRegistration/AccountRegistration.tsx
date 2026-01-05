@@ -120,13 +120,17 @@ function TextFieldComponent({
 }: TextFieldProps) {
   return (
     <View style={styles.fieldContainer}>
-      <Text style={styles.label}>{field.label}</Text>
+      <Text style={styles.label}>
+        {field.label}
+        {field.required && <Text style={{ color: "red" }}> *</Text>}
+      </Text>
       <TextInput
         {...rest}
         placeholder={field.placeholder}
         style={[styles.input, style]}
         value={value}
         onChangeText={onChangeText}
+        autoCapitalize="none"
       />
     </View>
   );
@@ -142,7 +146,10 @@ function PasswordFieldComponent({
 }: PasswordFieldProps) {
   return (
     <View style={styles.fieldContainer}>
-      <Text style={styles.label}>{field.label}</Text>
+      <Text style={styles.label}>
+        {field.label}
+        {field.required && <Text style={{ color: "red" }}> *</Text>}
+      </Text>
       <TextInput
         {...rest}
         style={[styles.input, style]}
@@ -150,6 +157,7 @@ function PasswordFieldComponent({
         secureTextEntry={true}
         value={value}
         onChangeText={onChangeText}
+        autoCapitalize="none"
       />
       <PasswordStrengthMeter password={value ?? ""} rules={rules} />
     </View>
@@ -165,7 +173,10 @@ function DateFieldComponent({
 }: TextFieldProps) {
   return (
     <View style={styles.fieldContainer}>
-      <Text style={styles.label}>{field.label}</Text>
+      <Text style={styles.label}>
+        {field.label}
+        {field.required && <Text style={{ color: "red" }}> *</Text>}
+      </Text>
       <TextInput
         {...rest}
         style={[styles.input, style]}
