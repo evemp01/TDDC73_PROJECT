@@ -34,6 +34,29 @@ export function AccountRegistration({
       )!.innerText = `Required field(s): ${fieldNames}`;
       return;
     }
+
+    // Hitta lösenordsfältet i konfigurationen
+    const passwordField = props.fields.find((f) => f.type === "password");
+
+    if (passwordField) {
+      // Hämta värdet (eller tom sträng om inget är ifyllt)
+      const passwordValue = formData[passwordField.id] || "";
+
+      // Hitta alla ouppfyllda regler
+      const brokenRules = props.passwordRules.filter(
+        (rule) => !rule.test(passwordValue)
+      );
+
+      // Om vi har några brutna regler, stoppa och visa felmeddelande
+      if (brokenRules.length > 0) {
+        const errorMessages = brokenRules.map((r) => r.label).join("\n");
+        document.getElementById(
+          "error-text"
+        )!.innerText = `Password is too weak, these rules are not met: ${errorMessages}`;
+        return;
+      }
+    };
+    
     document.getElementById("error-text")!.innerText = "";
     props.onSubmit(formData);
   };
