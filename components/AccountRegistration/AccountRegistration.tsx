@@ -25,14 +25,19 @@ export function AccountRegistration({
       {props.fields.map((field) => {
         const currentValue = formData[field.id] || "";
 
+        const commonProps = {
+          key: field.id,
+          field: field,
+          value: currentValue,
+          style: field.style,
+          ...field,
+        };
+
         // Text fields
         if (field.type === "text") {
           return (
             <TextFieldComponent
-              key={field.id}
-              field={field}
-              style={field.style}
-              value={currentValue}
+              {...commonProps}
               onChangeText={(value) => handleInputChange(field.id, value)}
             />
           );
@@ -42,12 +47,9 @@ export function AccountRegistration({
         else if (field.type === "password") {
           return (
             <PasswordFieldComponent
-              key={field.id}
-              field={field}
-              value={currentValue}
-              onChangeText={(value) => handleInputChange(field.id, value)}
+              {...commonProps}
               rules={props.passwordRules}
-              style={field.style}
+              onChangeText={(value) => handleInputChange(field.id, value)}
             />
           );
         }
@@ -56,11 +58,8 @@ export function AccountRegistration({
         else if (field.type === "date") {
           return (
             <DateFieldComponent
-              key={field.id}
-              field={field}
-              value={currentValue}
+              {...commonProps}
               onChangeText={(value) => handleInputChange(field.id, handleDateChange(value))}
-              style={field.style}
             />
           );
         } else {
