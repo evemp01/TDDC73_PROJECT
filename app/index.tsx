@@ -8,6 +8,7 @@ const fields: RegistrationField[] = [
   { id: "dob1", label: "Date of Birth", placeholder: "ÅÅÅÅ-MM-DD", type: "date"},
   { id: "name1", label: "Name", placeholder: "Enter your name", type: "text" },
   { id: "p1", label: "Password", type: "password" },
+  { id: "text1", label: "Text", type: "text", maxLength: 2 },
 ];
 
 const rules: PasswordRule[] = [
