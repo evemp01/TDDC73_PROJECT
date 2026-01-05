@@ -65,7 +65,9 @@ export function AccountRegistration({
           return (
             <TextFieldComponent
               {...commonProps}
+              key={field.id}
               onChangeText={(value) => handleInputChange(field.id, value)}
+              testID={`input-${field.id}`}
             />
           );
         }
@@ -75,7 +77,9 @@ export function AccountRegistration({
           return (
             <PasswordFieldComponent
               {...commonProps}
+              key={field.id}
               rules={props.passwordRules}
+              testID={`input-${field.id}`}
               onChangeText={(value) => handleInputChange(field.id, value)}
             />
           );
@@ -86,9 +90,9 @@ export function AccountRegistration({
           return (
             <DateFieldComponent
               {...commonProps}
-              onChangeText={(value) =>
-                handleInputChange(field.id, handleDateChange(value))
-              }
+              key={field.id}
+              testID={`input-${field.id}`}
+              onChangeText={(value) => handleInputChange(field.id, handleDateChange(value))}
             />
           );
         } else {
@@ -99,6 +103,7 @@ export function AccountRegistration({
 
       <View style={styles.buttonContainer}>
         <Pressable
+          testID="submit-button"
           style={[styles.submitButton, props.styling?.submitButtonStyling]}
           onPress={handleSubmit}>
           <Text
