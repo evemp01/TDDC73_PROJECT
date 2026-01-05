@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
 import {
   AccountRegistrationProps,
@@ -27,10 +20,6 @@ export function AccountRegistration({
     }));
   };
 
-  // const handleSubmit = () => {
-  //   props.onSubmit(formData);
-  // };
-
   const handleSubmit = () => {
     // Hitta alla fält som är required men saknar värde i formData
     const missingFields = props.fields.filter(
@@ -40,10 +29,12 @@ export function AccountRegistration({
     if (missingFields.length > 0) {
       // Skapa ett felmeddelande
       const fieldNames = missingFields.map((f) => f.label).join(", ");
-      Alert.alert("Missing information", `Required field(s): ${fieldNames}`);
-      return; // Avbryt, skicka inte formuläret
+      document.getElementById(
+        "error-text"
+      )!.innerText = `Required field(s): ${fieldNames}`;
+      return;
     }
-
+    document.getElementById("error-text")!.innerText = "";
     props.onSubmit(formData);
   };
 
@@ -92,7 +83,9 @@ export function AccountRegistration({
               {...commonProps}
               key={field.id}
               testID={`input-${field.id}`}
-              onChangeText={(value) => handleInputChange(field.id, handleDateChange(value))}
+              onChangeText={(value) =>
+                handleInputChange(field.id, handleDateChange(value))
+              }
             />
           );
         } else {
@@ -102,6 +95,7 @@ export function AccountRegistration({
       })}
 
       <View style={styles.buttonContainer}>
+        <Text style={styles.errorText} id="error-text"></Text>
         <Pressable
           testID="submit-button"
           style={[styles.submitButton, props.styling?.submitButtonStyling]}
@@ -175,7 +169,7 @@ function DateFieldComponent({
       <TextInput
         {...rest}
         style={[styles.input, style]}
-        placeholder={field.placeholder || "YYYY-MM-DD"}
+        placeholder={field.placeholder || "YYYYMMDD"}
         keyboardType="numeric"
         value={value}
         onChangeText={onChangeText}
@@ -253,5 +247,8 @@ const styles = StyleSheet.create({
   },
   submitText: {
     color: "#fff",
+  },
+  errorText: {
+    marginBottom: 10,
   },
 });
