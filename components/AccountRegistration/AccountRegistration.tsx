@@ -1,26 +1,41 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
-import {
-  AccountRegistrationProps,
-  DateFieldProps,
-  PasswordFieldProps,
-  RegistrationField,
-} from "./types";
+import { AccountRegistrationProps, PasswordFieldProps, TextFieldProps } from "./types";
 
 export function AccountRegistration({
-  fields,
-  passwordRules,
+  confirmationText = "Sign Up",
+  ...props
 }: AccountRegistrationProps) {
-  const [password, setPassword] = useState("");
-  const [date, setDate] = useState("");
+  const [formData, setFormData] = useState<Record<string, string>>({});
+
+  const handleInputChange = (id: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    props.onSubmit(formData);
+  };
 
   return (
-    <View style={styles.container}>
-      {fields.map((field) => {
+    <View style={[styles.container, props.styling?.containerStyling]}>
+      {props.fields.map((field) => {
+        const currentValue = formData[field.id] || "";
+
         // Text fields
         if (field.type === "text") {
-          return <TextFieldComponent key={field.id} field={field} />;
+          return (
+            <TextFieldComponent
+              key={field.id}
+              field={field}
+              style={field.style}
+              value={currentValue}
+              onChangeText={(value) => handleInputChange(field.id, value)}
+            />
+          );
         }
 
         // Password fields
@@ -29,9 +44,10 @@ export function AccountRegistration({
             <PasswordFieldComponent
               key={field.id}
               field={field}
-              passwordValue={password}
-              onPasswordChange={setPassword}
-              passwordRules={passwordRules}
+              value={currentValue}
+              onChangeText={(value) => handleInputChange(field.id, value)}
+              rules={props.passwordRules}
+              style={field.style}
             />
           );
         }
@@ -42,8 +58,9 @@ export function AccountRegistration({
             <DateFieldComponent
               key={field.id}
               field={field}
-              date={date}
-              onDateChange={setDate}
+              value={currentValue}
+              onChangeText={(value) => handleInputChange(field.id, handleDateChange(value))}
+              style={field.style}
             />
           );
         } else {
@@ -53,54 +70,70 @@ export function AccountRegistration({
       })}
 
       <View style={styles.buttonContainer}>
-        <Button title="Sign up" accessibilityLabel="Sign up" />
+        <Pressable
+          style={[styles.submitButton, props.styling?.submitButtonStyling]}
+          onPress={handleSubmit}>
+          <Text
+            accessibilityLabel={confirmationText}
+            style={[styles.submitText, props.styling?.submitTextStyling]}>
+            {confirmationText}
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
 }
 
-function TextFieldComponent(props: { field: RegistrationField }) {
+function TextFieldComponent({ field, value, onChangeText, style, ...rest }: TextFieldProps) {
   return (
     <View style={styles.fieldContainer}>
-      <Text style={styles.label}>{props.field.label}</Text>
-      <TextInput placeholder={props.field.placeholder} style={styles.input} />
+      <Text style={styles.label}>{field.label}</Text>
+      <TextInput
+        {...rest}
+        placeholder={field.placeholder}
+        style={[styles.input, style]}
+        value={value}
+        onChangeText={onChangeText}
+      />
     </View>
   );
 }
 
 function PasswordFieldComponent({
   field,
-  passwordValue,
-  onPasswordChange,
-  passwordRules,
+  value,
+  onChangeText,
+  rules,
+  style,
+  ...rest
 }: PasswordFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>{field.label}</Text>
       <TextInput
-        style={styles.input}
+        {...rest}
+        style={[styles.input, style]}
         placeholder={field.placeholder}
         secureTextEntry={true}
-        value={passwordValue}
-        onChangeText={onPasswordChange}
+        value={value}
+        onChangeText={onChangeText}
       />
-
-      <PasswordStrengthMeter password={passwordValue} rules={passwordRules} />
+      <PasswordStrengthMeter password={value ?? ""} rules={rules} />
     </View>
   );
 }
 
-function DateFieldComponent({ field, date, onDateChange }: DateFieldProps) {
+function DateFieldComponent({ field, value, onChangeText, style, ...rest }: TextFieldProps) {
   return (
-    <View key={field.id} style={styles.fieldContainer}>
+    <View style={styles.fieldContainer}>
       <Text style={styles.label}>{field.label}</Text>
-
       <TextInput
-        style={styles.input}
+        {...rest}
+        style={[styles.input, style]}
         placeholder={field.placeholder || "YYYY-MM-DD"}
         keyboardType="numeric"
-        value={date}
-        onChangeText={(text) => onDateChange(handleDateChange(text))}
+        value={value}
+        onChangeText={onChangeText}
         maxLength={10}
       />
     </View>
@@ -162,5 +195,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     textAlign: "center",
     padding: 0,
+  },
+  submitButton: {
+    flex: 1,
+    width: "100%",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: "#1a1a1aff",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  submitText: {
+    color: "#fff",
   },
 });

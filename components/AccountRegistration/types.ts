@@ -1,6 +1,7 @@
+import { PressableProps, StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
 import { PasswordRule } from "../PasswordStrengthMeter/types";
 
-export type RegistrationField = {
+export type RegistrationField = TextInputProps & {
   id: string;
   label: string;
   placeholder?: string;
@@ -12,18 +13,19 @@ export type RegistrationField = {
 export type AccountRegistrationProps = {
   fields: RegistrationField[];
   passwordRules: PasswordRule[];
-  //   onSubmit:
+  confirmationText?: string;
+  styling?: {
+    containerStyling?: StyleProp<ViewStyle>;
+    submitButtonStyling?: StyleProp<PressableProps>;
+    submitTextStyling?: StyleProp<TextStyle>;
+  };
+  onSubmit: (values: Record<string, string>) => void;
 };
 
-export type PasswordFieldProps = {
-  field: RegistrationField;
-  passwordValue: string;
-  onPasswordChange: (text: string) => void;
-  passwordRules: PasswordRule[]; 
+export type PasswordFieldProps = TextFieldProps & {
+  rules: PasswordRule[];
 };
 
-export type DateFieldProps = {
+export type TextFieldProps = TextInputProps & {
   field: RegistrationField;
-  date: string;
-  onDateChange: (text: string) => void;
 };
