@@ -1,7 +1,18 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
-import { AccountRegistrationProps, PasswordFieldProps, TextFieldProps } from "./types";
+import {
+  AccountRegistrationProps,
+  PasswordFieldProps,
+  TextFieldProps,
+} from "./types";
 
 export function AccountRegistration({
   confirmationText = "Sign Up",
@@ -16,7 +27,23 @@ export function AccountRegistration({
     }));
   };
 
+  // const handleSubmit = () => {
+  //   props.onSubmit(formData);
+  // };
+
   const handleSubmit = () => {
+    // Hitta alla fält som är required men saknar värde i formData
+    const missingFields = props.fields.filter(
+      (field) => field.required && !formData[field.id]
+    );
+
+    if (missingFields.length > 0) {
+      // Skapa ett felmeddelande
+      const fieldNames = missingFields.map((f) => f.label).join(", ");
+      Alert.alert("Missing information", `Required field(s): ${fieldNames}`);
+      return; // Avbryt, skicka inte formuläret
+    }
+
     props.onSubmit(formData);
   };
 
@@ -59,7 +86,9 @@ export function AccountRegistration({
           return (
             <DateFieldComponent
               {...commonProps}
-              onChangeText={(value) => handleInputChange(field.id, handleDateChange(value))}
+              onChangeText={(value) =>
+                handleInputChange(field.id, handleDateChange(value))
+              }
             />
           );
         } else {
@@ -83,7 +112,13 @@ export function AccountRegistration({
   );
 }
 
-function TextFieldComponent({ field, value, onChangeText, style, ...rest }: TextFieldProps) {
+function TextFieldComponent({
+  field,
+  value,
+  onChangeText,
+  style,
+  ...rest
+}: TextFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>{field.label}</Text>
@@ -122,7 +157,13 @@ function PasswordFieldComponent({
   );
 }
 
-function DateFieldComponent({ field, value, onChangeText, style, ...rest }: TextFieldProps) {
+function DateFieldComponent({
+  field,
+  value,
+  onChangeText,
+  style,
+  ...rest
+}: TextFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>{field.label}</Text>

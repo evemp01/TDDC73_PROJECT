@@ -4,10 +4,10 @@ import { Text, View } from "react-native";
 import { AccountRegistration } from "../components/AccountRegistration/AccountRegistration";
 
 const fields: RegistrationField[] = [
-  { id: "email1", label: "Email", type: "text" },
+  { id: "email1", label: "Email", type: "text", required: true },
   { id: "dob1", label: "Date of Birth", placeholder: "ÅÅÅÅ-MM-DD", type: "date"},
-  { id: "name1", label: "Name", placeholder: "Enter your name", type: "text" },
-  { id: "p1", label: "Password", type: "password" },
+  { id: "name1", label: "Name", placeholder: "Enter your name", type: "text", required: true },
+  { id: "p1", label: "Password", type: "password", required: true },
   { id: "text1", label: "Text", type: "text", maxLength: 2 },
 ];
 
