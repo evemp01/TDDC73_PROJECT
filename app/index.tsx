@@ -1,7 +1,5 @@
-import { RegistrationField } from "@/components/AccountRegistration/types";
-import { PasswordRule } from "@/components/PasswordStrengthMeter/types";
-import { View } from "react-native";
-import { AccountRegistration } from "../components/AccountRegistration/AccountRegistration";
+import { AccountRegistration, Button, ButtonText, Card, CardContent, CardDescription, CardHeader, CardTitle, Column, PasswordRule, RegistrationField, Row } from "@/ui-sdk/src";
+import { ScrollView, Text, View } from "react-native";
 
 // Example configuration for account registration
 // Here we define the fields we want in our registration form
@@ -75,12 +73,71 @@ const rules: PasswordRule[] = [
 
 export default function Index() {
   return (
-    <View style={{ padding: 20 }}>
-      <AccountRegistration
-        fields={fields}
-        passwordRules={rules}
-        onSubmit={(values) => console.log(values)}
-      />
-    </View>
+    <ScrollView style={{ padding: 20 }}>
+      <Card>
+        <CardContent>
+          <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log(values)} />
+        </CardContent>
+      </Card>
+
+      <Row spacing={32} justify="center" align="center" style={{ width: "100%" }} legacy>
+        <Column spacing={24} style={{ padding: 20, backgroundColor: "#ff9d9d", flex: 1 }} align="center">
+          <Card>
+            <CardHeader>
+              <Row spacing={10} align="center">
+                <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: "green" }} />
+                <CardTitle>Välkommen!</CardTitle>
+              </Row>
+              <CardDescription>Fyll i formuläret nedan för att skapa ditt konto.</CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card>
+            <CardContent style={{ paddingTop: 20 }}>
+              <AccountRegistration
+                onSubmit={(data) => console.log("Registreringsdata:", data)}
+                fields={[
+                  { id: "username", label: "Användarnamn", type: "text", required: true },
+                  { id: "email", label: "E-post", type: "text", required: true },
+                  { id: "password", label: "Lösenord", type: "password", required: true },
+                ]}
+                passwordRules={[{ id: "len", label: "Minst 8 tecken", test: (p) => p.length >= 8 }]}
+              />
+            </CardContent>
+          </Card>
+        </Column>
+      </Row>
+
+      <Row spacing={32} justify="center" style={{ width: "100%" }} legacy>
+        <Column legacy={true} spacing={10} style={{ marginTop: 20 }}>
+          <Text style={{ fontWeight: "bold" }}>Systemstatus (Legacy Render):</Text>
+          <Row legacy={true} spacing={15}>
+            <Text>Server: OK</Text>
+            <Text>Databas: OK</Text>
+          </Row>
+        </Column>
+        <Column>
+          <Card>
+            <CardHeader>
+              <CardTitle>Example Card</CardTitle>
+              <CardDescription>Example card and card description that shows the different buttons</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <View style={{ gap: 12 }}>
+                <Button variant="default">
+                  <ButtonText>Test</ButtonText>
+                </Button>
+                <Button variant="outline">
+                  <ButtonText>Test</ButtonText>
+                </Button>
+                <Button variant="link">
+                  <ButtonText>Test</ButtonText>
+                </Button>
+              </View>
+            </CardContent>
+          </Card>
+        </Column>
+      </Row>
+    </ScrollView>
   );
 }

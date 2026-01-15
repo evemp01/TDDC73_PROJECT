@@ -1,0 +1,14 @@
+{
+  "name": "ui-sdk",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "description": "Simple UI sdk for React Native",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.70.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "typescript": "~5.9.2"
+  }
+}
