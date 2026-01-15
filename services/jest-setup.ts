@@ -1,3 +1,7 @@
+if (typeof global.__ExpoImportMetaRegistry === "undefined") {
+  (global as any).__ExpoImportMetaRegistry = new Map();
+}
+
 jest.mock("react-native-reanimated", () => {
   const Reanimated = require("react-native-reanimated/mock");
   Reanimated.default.call = () => {};
