@@ -1,52 +1,117 @@
-# Welcome to your Expo app 👋
+# TDDC73 Project — Interaction SDK
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This repository contains the implementation of an interaction component SDK. The SDK provides reusable UI interaction components and a demo application showcasing usage. The project is developed with React Native (Expo) and written in TypeScript.
 
-## Get started
+## Features
+The SDK includes the following interaction patterns:
 
-1. Install dependencies
+**Account Registration Component**
+A reusable form component for collecting user data (e.g. name, date of birth, password).  
+Each field can be configured as required or optional.
 
-   ```bash
-   npm install
-   ```
+**Password Strength Meter**
+A stand-alone component for evaluating and displaying password strength.  
+Password rules are configurable and feedback is shown to the user.
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+## Repository Structure
+```
+TDDC73_PROJECT/
+├── app/                   # Demo Expo app using the SDK
+├── components/            # Custom SDK components
+│   ├── AccountRegistration/
+│   └── PasswordStrengthMeter/
+├── services/
+├── .gitignore
+├── README.md
+├── package.json
+├── tsconfig.json
+└── expo.config.js
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Getting Started
+### Prerequisites
+Install dependencies:
+- Node.js (v16+ recommended)
 
-## Learn more
+### Install
+Clone the repository:
+```
+git clone https://github.com/evemp01/TDDC73_PROJECT.git
+cd TDDC73_PROJECT
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+#### Install dependencies:
+```
+npm install
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+#### Running the App:
+Start the Expo development server:
+```
+npx expo start
+```
 
-## Join the community
+## Using the SDK Components
+Example: Importing and using the PasswordStrength component:
+```
+import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
 
-Join our community of developers creating universal apps.
+const passwordRules = [
+  {
+    id: "length",
+    label: "At least 8 characters",
+    test: (password: string) => password.length >= 8,
+  },
+  {
+    id: "digit",
+    label: "Contains a number",
+    test: (password: string) => /\d/.test(password),
+  },
+];
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+const [password, setPassword] = useState("");
 
-## Our SDK for Account Registration and Password Strength Tester
+<PasswordStrengthMeter
+  password={password}
+  rules={passwordRules}
+/>
+```
+
+Example: Using the AccountRegistration form:
+```
+import { AccountRegistration } from '../components/AccountRegistration';
+import { RegistrationField } from '../components/AccountRegistration/types';
+
+const fields: RegistrationField[] = [
+  {
+    id: "username1",
+    label: "Username",
+    placeholder: "Choose a username",
+    type: "text",
+    required: true,
+  },
+  {
+    id: "dob1",
+    label: "Date of Birth",
+    type: "date",
+  },
+  {
+    id: "p1",
+    label: "Password",
+    placeholder: "Choose your password",
+    type: "password",
+    required: true,
+  },
+];
+
+<AccountRegistration
+  fields={fields}
+  passwordRules={rules}
+  onSubmit={(values) => console.log(values)}
+/>
+```
+The three "types" of fields that can be used are "text", "password" or "date".
+
+## Testing (Optional)
+UI tests demonstrating component correctness should be placed in a /tests directory.
+ida.liu.se
