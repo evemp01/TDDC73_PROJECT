@@ -29,10 +29,21 @@ describe("AccountRegistration UI-tests", () => {
       <AccountRegistration fields={mockFields} passwordRules={mockRules} onSubmit={mockOnSubmit} />
     );
 
+    // Fyll i användarnamn
     fireEvent.changeText(screen.getByTestId("input-user"), "Göran");
-    fireEvent.press(screen.getByTestId("input-user"));
+
+    // Fyll i lösenord (måste vara minst 5 tecken enligt mockRules)
+    fireEvent.changeText(screen.getByTestId("input-pass"), "12345");
+
+    // Tryck på knappen
     fireEvent.press(screen.getByTestId("submit-button"));
 
-    expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({ user: "Göran" }));
+    // Kontrollera att den anropats med rätt data
+    expect(mockOnSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        user: "Göran",
+        pass: "12345",
+      })
+    );
   });
 });
