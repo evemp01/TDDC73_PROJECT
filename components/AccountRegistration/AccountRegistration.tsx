@@ -12,6 +12,7 @@ export function AccountRegistration({
   ...props
 }: AccountRegistrationProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (id: string, value: string) => {
     setFormData((prev) => ({
@@ -29,9 +30,9 @@ export function AccountRegistration({
     if (missingFields.length > 0) {
       // Skapa ett felmeddelande
       const fieldNames = missingFields.map((f) => f.label).join(", ");
-      document.getElementById(
-        "error-text"
-      )!.innerText = `Required field(s): ${fieldNames}`;
+
+      // Använd state istället för document.getElementById
+      setErrorMessage(`Required field(s): ${fieldNames}`);
       return;
     }
 
@@ -39,25 +40,23 @@ export function AccountRegistration({
     const passwordField = props.fields.find((f) => f.type === "password");
 
     if (passwordField) {
-      // Hämta värdet (eller tom sträng om inget är ifyllt)
       const passwordValue = formData[passwordField.id] || "";
-
-      // Hitta alla ouppfyllda regler
       const brokenRules = props.passwordRules.filter(
         (rule) => !rule.test(passwordValue)
       );
 
-      // Om vi har några brutna regler, stoppa och visa felmeddelande
       if (brokenRules.length > 0) {
         const errorMessages = brokenRules.map((r) => r.label).join("\n");
-        document.getElementById(
-          "error-text"
-        )!.innerText = `Password is too weak, these rules are not met: ${errorMessages}`;
+
+        setErrorMessage(
+          `Password is too weak, these rules are not met: ${errorMessages}`
+        );
         return;
       }
-    };
-    
-    document.getElementById("error-text")!.innerText = "";
+    }
+
+    // Om allt gick bra, töm felmeddelandet och skicka data
+    setErrorMessage("");
     props.onSubmit(formData);
   };
 
@@ -118,7 +117,7 @@ export function AccountRegistration({
       })}
 
       <View style={styles.buttonContainer}>
-        <Text style={styles.errorText} id="error-text"></Text>
+        <Text style={styles.errorText}>{errorMessage}</Text>
         <Pressable
           testID="submit-button"
           style={[styles.submitButton, props.styling?.submitButtonStyling]}

@@ -45,7 +45,10 @@ const rules: PasswordRule[] = [
     label: "At least 8 characters",
     test: (p: string) => p.length >= 8,
   },
-  { id: "2", label: "At least one digit", test: (p: string) => /\d/.test(p) },
+  { 
+    id: "2", 
+    label: "At least one digit", 
+    test: (p: string) => /\d/.test(p) },
 ];
 
 export default function Index() {
