@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { PasswordStrengthProps, RuleComponentType } from "./types";
 
+// Component to display password strength based on defined rules
 export function PasswordStrengthMeter({
   password,
   rules,
@@ -23,6 +24,8 @@ export function PasswordStrengthMeter({
   );
 }
 
+// Component to display individual password rule status
+// With optional custom icons and styling for passed and failed rules
 function RuleComponent({
   rule,
   password,
@@ -34,10 +37,9 @@ function RuleComponent({
   const passed = rule.test(password);
   return (
     <View style={[styles.ruleRow, style?.ruleRow]}>
+      {/* Display custom icons if provided, otherwise use default text indicators */}
       {icons ? (
-        <View>
-          {passed ? icons.passed : icons.failed}
-        </View>
+        <View>{passed ? icons.passed : icons.failed}</View>
       ) : (
         <Text
           style={[
@@ -49,6 +51,7 @@ function RuleComponent({
           {passed ? passString : failString}
         </Text>
       )}
+     {/* Display rule styling if provided */}
       <Text
         style={
           passed

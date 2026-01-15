@@ -1,8 +1,20 @@
 import { RegistrationField } from "@/components/AccountRegistration/types";
 import { PasswordRule } from "@/components/PasswordStrengthMeter/types";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { AccountRegistration } from "../components/AccountRegistration/AccountRegistration";
 
+// Example configuration for account registration
+// Here we define the fields we want in our registration form
+// The fields will be displayed in the order they are defined here
+
+/**
+ * @param id - Unique identifier for the field
+ * @param label - Display label for the field
+ * @param placeholder - Placeholder text for the input (optional)
+ * @param type - Type of the field: "text", "password", or "date"
+ * @param required - Whether the field is required (default: false)
+ * And any other properties related to text input (e.g., maxLength, styles and onChangeText)
+ */
 const fields: RegistrationField[] = [
   {
     id: "username1",
@@ -10,6 +22,7 @@ const fields: RegistrationField[] = [
     placeholder: "Choose a username",
     type: "text",
     required: true,
+    maxLength: 8,
   },
   {
     id: "name1",
@@ -39,16 +52,25 @@ const fields: RegistrationField[] = [
   },
 ];
 
+// Example password rules for the password strength meter
+// These rules will be used to validate the password strength
+// You can customize these rules as needed
+/**
+ * @param id - Unique identifier for the rule
+ * @param label - Description of the rule
+ * @param test - Function that tests if the password meets the rule
+ */
 const rules: PasswordRule[] = [
   {
     id: "1",
     label: "At least 8 characters",
     test: (p: string) => p.length >= 8,
   },
-  { 
-    id: "2", 
-    label: "At least one digit", 
-    test: (p: string) => /\d/.test(p) },
+  {
+    id: "2",
+    label: "At least one digit",
+    test: (p: string) => /\d/.test(p),
+  },
 ];
 
 export default function Index() {

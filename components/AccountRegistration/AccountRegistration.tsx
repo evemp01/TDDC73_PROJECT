@@ -7,13 +7,17 @@ import {
   TextFieldProps,
 } from "./types";
 
+// Main component for account registration form
 export function AccountRegistration({
   confirmationText = "Sign Up",
   ...props
 }: AccountRegistrationProps) {
+
+  // State to hold form data and error messages
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Function to handle input changes and update form data state
   const handleInputChange = (id: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -21,24 +25,24 @@ export function AccountRegistration({
     }));
   };
 
+  // Function to handle form submission
   const handleSubmit = () => {
-    // Hitta alla fält som är required men saknar värde i formData
+    // Find all required fields that are missing
     const missingFields = props.fields.filter(
       (field) => field.required && !formData[field.id]
     );
 
+    // If there are missing required fields, set an error message
     if (missingFields.length > 0) {
-      // Skapa ett felmeddelande
       const fieldNames = missingFields.map((f) => f.label).join(", ");
-
-      // Använd state istället för document.getElementById
       setErrorMessage(`Required field(s): ${fieldNames}`);
       return;
     }
 
-    // Hitta lösenordsfältet i konfigurationen
+    // Find the password field in the configuration
     const passwordField = props.fields.find((f) => f.type === "password");
 
+    // If a password field exists, validate it against the provided rules
     if (passwordField) {
       const passwordValue = formData[passwordField.id] || "";
       const brokenRules = props.passwordRules.filter(
@@ -47,15 +51,13 @@ export function AccountRegistration({
 
       if (brokenRules.length > 0) {
         const errorMessages = brokenRules.map((r) => r.label).join("\n");
-
         setErrorMessage(
           `Password is too weak, these rules are not met: ${errorMessages}`
         );
         return;
       }
     }
-
-    // Om allt gick bra, töm felmeddelandet och skicka data
+    // If all validations pass, clear error messages and call onSubmit
     setErrorMessage("");
     props.onSubmit(formData);
   };
@@ -65,6 +67,7 @@ export function AccountRegistration({
       {props.fields.map((field) => {
         const currentValue = formData[field.id] || "";
 
+        // Common props for all field types
         const commonProps = {
           key: field.id,
           field: field,
@@ -213,21 +216,20 @@ function DateFieldComponent({
 }
 
 const handleDateChange = (text: string) => {
-  // Tar bort allt som inte är siffror
+  // Replace non-digit characters
   const cleaned = text.replace(/\D/g, "");
 
   let formatted = cleaned;
-
+  
+  // Add dash after year
   if (cleaned.length > 4) {
-    // Lägg till bindestreck efter ÅÅÅÅ
     formatted = `${cleaned.slice(0, 4)}-${cleaned.slice(4)}`;
   }
+  // Add dash after month
   if (cleaned.length > 6) {
-    // Lägg till bindestreck efter MM
     formatted = `${formatted.slice(0, 7)}-${formatted.slice(7, 9)}`;
   }
-
-  // Uppdatera state (max 10 tecken: ÅÅÅÅ-MM-DD)
+  // Limit to 10 characters (YYYY-MM-DD)
   return formatted.slice(0, 10);
 };
 
