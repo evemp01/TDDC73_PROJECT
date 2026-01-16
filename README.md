@@ -78,7 +78,7 @@ npx expo start
 
 - **[Layout Documentation](ui-sdk/src/components/Layout/README.MD)**
 
-## Testing (Optional)
+## Testing
 
 The project uses Jest and React Native Testing Library. Tests are located alongside their respective components.
 
