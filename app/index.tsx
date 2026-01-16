@@ -113,18 +113,6 @@ const styledFields: RegistrationField[] = [
 ];
 
 const accountRegistrationStyle: AccountRegistrationStyle = {
-  // Style the main form container
-  containerStyling: {
-    backgroundColor: "#ffffff", // Dark blue background
-    borderRadius: 15,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 8, // Shadow on Android
-  },
-
   // Style the submit button
   submitButtonStyling: {
     style: {
@@ -210,9 +198,7 @@ export default function Index() {
           </Text>
           <Text style={{ marginBottom: 10, color: "#666" }}>This is how the component looks "out of the box" without any extra styling.</Text>
 
-          <View>
-            <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log("Default submit:", values)} />
-          </View>
+          <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log("Default submit:", values)} />
 
           {/* ---------------- EXAMPLE 2: CUSTOM STYLING ---------------- */}
           <Text
