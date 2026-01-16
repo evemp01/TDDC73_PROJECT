@@ -1,7 +1,19 @@
-import { RegistrationField } from "@/components/AccountRegistration/types";
-import { PasswordRule } from "@/components/PasswordStrengthMeter/types";
+import {
+  AccountRegistration,
+  AccountRegistrationStyle,
+  Button,
+  ButtonText,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Column,
+  PasswordRule,
+  RegistrationField,
+  Row,
+} from "@/ui-sdk/src";
 import { ScrollView, Text, TextInputProps, View } from "react-native";
-import { AccountRegistration } from "../components/AccountRegistration/AccountRegistration";
 
 // Example configuration for account registration
 // Here we define the fields we want in our registration form
@@ -15,6 +27,14 @@ import { AccountRegistration } from "../components/AccountRegistration/AccountRe
  * @param required - Whether the field is required (default: false)
  * And any other properties related to text input (e.g., maxLength, styles and onChangeText)
  */
+const fieldStyling: TextInputProps["style"] = {
+  borderRadius: 100,
+  borderWidth: 1,
+  borderColor: "#2ecc71",
+  paddingHorizontal: 15,
+  paddingVertical: 10,
+};
+
 const fields: RegistrationField[] = [
   {
     id: "username1",
@@ -51,28 +71,17 @@ const fields: RegistrationField[] = [
   },
 ];
 
-// Custom styling for the input fields
-
-const fieldStyling: TextInputProps["style"] = {
-  borderRadius: 100,
-  borderWidth: 1,
-  borderColor: "#2ecc71",
-  paddingHorizontal: 15,
-  paddingVertical: 10,
-};
-
 const styledFields: RegistrationField[] = [
   {
-    id: "username1",
+    id: "username2",
     label: "Username",
     placeholder: "Choose a username",
     type: "text",
     required: true,
-    maxLength: 12,
     style: fieldStyling,
   },
   {
-    id: "name1",
+    id: "name2",
     label: "Name",
     placeholder: "Enter your full name",
     type: "text",
@@ -80,7 +89,7 @@ const styledFields: RegistrationField[] = [
     style: fieldStyling,
   },
   {
-    id: "email1",
+    id: "email2",
     label: "Email",
     placeholder: "example@mail.com",
     type: "text",
@@ -88,13 +97,13 @@ const styledFields: RegistrationField[] = [
     style: fieldStyling,
   },
   {
-    id: "dob1",
+    id: "dob2",
     label: "Date of Birth",
     type: "date",
     style: fieldStyling,
   },
   {
-    id: "p1",
+    id: "p2",
     label: "Password",
     placeholder: "Choose your password",
     type: "password",
@@ -102,6 +111,54 @@ const styledFields: RegistrationField[] = [
     style: fieldStyling,
   },
 ];
+
+const accountRegistrationStyle: AccountRegistrationStyle = {
+  // Style the submit button
+  submitButtonStyling: {
+    style: {
+      backgroundColor: "#27ae60", // Green button
+      borderRadius: 50,
+      paddingVertical: 15,
+      marginTop: 20,
+      borderWidth: 2,
+      borderColor: "#2ecc71",
+    },
+  },
+
+  // Style the Password Strength Meter
+  passwordStrengthStyling: {
+    // The box around the rules
+    container: {
+      backgroundColor: "rgba(255, 255, 255, 0.1)", // Semi-transparent white
+      padding: 15,
+      borderRadius: 8,
+      marginTop: 15,
+      borderLeftWidth: 4,
+      borderLeftColor: "#f1c40f", // Yellow border line
+    },
+    // The title "Password must"
+    title: {
+      color: "#f1c40f", // Yellow text
+      fontSize: 14,
+      fontWeight: "900",
+      textTransform: "uppercase",
+      marginBottom: 10,
+    },
+    // The rules themselves
+    ruleStyling: {
+      // When the rule is passed
+      textPassed: {
+        color: "#2ecc71", // Light green
+        fontWeight: "bold",
+        textDecorationLine: "line-through", // Strike through the text
+      },
+      // When the rule is FAILED
+      textFailed: {
+        color: "#000000", // Grayish text
+      },
+    },
+  },
+};
 
 // Example password rules for the password strength meter
 // These rules will be used to validate the password strength
@@ -126,132 +183,104 @@ const rules: PasswordRule[] = [
 
 export default function Index() {
   return (
-    <ScrollView
-      style={{ flex: 1, padding: 20 }}
-      contentContainerStyle={{ paddingBottom: 50 }}>
-      {/* ---------------- EXAMPLE 1: DEFAULT STYLING ---------------- */}
-      <Text
-        style={{
-          fontSize: 22,
-          fontWeight: "bold",
-          marginBottom: 10,
-          marginTop: 40,
-        }}>
-        1. Default Styling
-      </Text>
-      <Text style={{ marginBottom: 10, color: "#666" }}>
-        This is how the component looks "out of the box" without any extra
-        styling.
-      </Text>
-
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: "#ccc",
-          padding: 10,
-          borderRadius: 5,
-        }}>
-        <AccountRegistration
-          fields={fields}
-          passwordRules={rules}
-          onSubmit={(values) => console.log("Default submit:", values)}
-        />
-      </View>
-
-      {/* ---------------- EXAMPLE 2: CUSTOM STYLING ---------------- */}
-      <Text
-        style={{
-          fontSize: 22,
-          fontWeight: "bold",
-          marginBottom: 10,
-          marginTop: 40,
-        }}>
-        2. Custom Styling
-      </Text>
-      <Text style={{ marginBottom: 10, color: "#666" }}>
-        Here we override the look for the form, the submit button, and the
-        password meter.
-      </Text>
-
-      <AccountRegistration
-        fields={styledFields}
-        passwordRules={rules}
-        onSubmit={(values) => console.log("Custom submit:", values)}
-        confirmationText="CREATE ACCOUNT NOW"
-        styling={{
-          // Style the main form container
-          containerStyling: {
-            backgroundColor: "#ffffff", // Dark blue background
-            borderRadius: 15,
-            padding: 20,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 5,
-            elevation: 8, // Shadow on Android
-          },
-
-          // Style the submit button
-          submitButtonStyling: {
-            backgroundColor: "#27ae60", 
-            borderRadius: 50,
-            paddingVertical: 15,
-            marginTop: 20,
-            borderWidth: 2,
-            borderColor: "#2ecc71",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 5,
-            elevation: 8, // Shadow on Android
-          },
-
-          // Style the button text
-          submitTextStyling: {
-            fontSize: 18,
-            fontWeight: "bold",
-            letterSpacing: 1.5,
-            color: "white",
-          },
-
-          // Style the Password Strength Meter
-          passwordStrengthStyling: {
-            // The box around the rules
-            container: {
-              backgroundColor: "rgba(255, 255, 255, 0.1)", // Semi-transparent white
-              padding: 15,
-              borderRadius: 8,
-              marginTop: 15,
-              borderLeftWidth: 4,
-              borderLeftColor: "#f1c40f", 
-            },
-            // The title "Password must"
-            title: {
-              color: "#f1c40f",
-              fontSize: 14,
-              fontWeight: "900",
-              textTransform: "uppercase",
+    <ScrollView style={{ padding: 20 }}>
+      <Card>
+        <CardContent>
+          {/* ---------------- EXAMPLE 1: DEFAULT STYLING ---------------- */}
+          <Text
+            style={{
+              fontSize: 22,
+              fontWeight: "bold",
               marginBottom: 10,
-            },
-            // The rules themselves
-            ruleStyling: {
-              // When the rule is passed
-              textPassed: {
-                color: "#2ecc71", 
-                fontWeight: "bold",
-                textDecorationLine: "line-through", // Strike through the text
-              },
-              // When the rule is FAILED
-              textFailed: {
-                color: "#000000", 
-              },
-            },
-          },
-        }}
-      />
+              marginTop: 40,
+            }}>
+            1. Default Styling
+          </Text>
+          <Text style={{ marginBottom: 10, color: "#666" }}>This is how the component looks "out of the box" without any extra styling.</Text>
 
-      {/* Extra space at the bottom */}
-      <View style={{ height: 50 }} />
+          <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log("Default submit:", values)} />
+
+          {/* ---------------- EXAMPLE 2: CUSTOM STYLING ---------------- */}
+          <Text
+            style={{
+              fontSize: 22,
+              fontWeight: "bold",
+              marginBottom: 10,
+              marginTop: 40,
+            }}>
+            2. Custom Styling
+          </Text>
+          <Text style={{ marginBottom: 10, color: "#666" }}>Here we override the look for the form, the submit button, and the password meter.</Text>
+
+          <AccountRegistration
+            fields={styledFields}
+            passwordRules={rules}
+            onSubmit={(values) => console.log("Custom submit:", values)}
+            confirmationText="CREATE ACCOUNT NOW"
+            styling={accountRegistrationStyle}
+          />
+        </CardContent>
+      </Card>
+
+      <Row spacing={32} justify="center" align="center" style={{ width: "100%" }} legacy>
+        <Column spacing={24} style={{ padding: 20, backgroundColor: "#ff9d9d", flex: 1 }} align="center">
+          <Card>
+            <CardHeader>
+              <Row spacing={10} align="center">
+                <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: "green" }} />
+                <CardTitle>Välkommen!</CardTitle>
+              </Row>
+              <CardDescription>Fyll i formuläret nedan för att skapa ditt konto.</CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card>
+            <CardContent style={{ paddingTop: 20 }}>
+              <AccountRegistration
+                styling={{ submitButtonStyling: { variant: "outline" } }}
+                onSubmit={(data) => console.log("Registreringsdata:", data)}
+                fields={[
+                  { id: "username3", label: "Användarnamn", type: "text", required: true },
+                  { id: "email3", label: "E-post", type: "text", required: true },
+                  { id: "password3", label: "Lösenord", type: "password", required: true },
+                ]}
+                passwordRules={[{ id: "len", label: "Minst 8 tecken", test: (p) => p.length >= 8 }]}
+              />
+            </CardContent>
+          </Card>
+        </Column>
+      </Row>
+
+      <Row spacing={32} justify="center" style={{ width: "100%" }} legacy>
+        <Column legacy={true} spacing={10} style={{ marginTop: 20 }}>
+          <Text style={{ fontWeight: "bold" }}>Systemstatus (Legacy Render):</Text>
+          <Row legacy={true} spacing={15}>
+            <Text>Server: OK</Text>
+            <Text>Databas: OK</Text>
+          </Row>
+        </Column>
+        <Column>
+          <Card>
+            <CardHeader>
+              <CardTitle>Example Card</CardTitle>
+              <CardDescription>Example card and card description that shows the different buttons</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <View style={{ gap: 12 }}>
+                <Button variant="default">
+                  <ButtonText>Test</ButtonText>
+                </Button>
+                <Button variant="outline">
+                  <ButtonText>Test</ButtonText>
+                </Button>
+                <Button variant="link">
+                  <ButtonText>Test</ButtonText>
+                </Button>
+              </View>
+            </CardContent>
+          </Card>
+        </Column>
+      </Row>
     </ScrollView>
   );
 }

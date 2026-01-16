@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, ButtonText } from "../Button/Button";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
 import { AccountRegistrationProps, PasswordFieldProps, RegistrationField } from "./types";
 
@@ -83,11 +84,14 @@ export function AccountRegistration({ confirmationText = "Sign Up", ...props }: 
 
       <View style={styles.buttonContainer}>
         <Text style={styles.errorText}>{errorMessage}</Text>
-        <Pressable testID="submit-button" style={[styles.submitButton, props.styling?.submitButtonStyling]} onPress={handleSubmit}>
+        <Button testID="submit-button" onPress={handleSubmit} {...props.styling?.submitButtonStyling}>
+          <ButtonText>{confirmationText}</ButtonText>
+        </Button>
+        {/* <Pressable testID="submit-button" style={[styles.submitButton, props.styling?.submitButtonStyling]} onPress={handleSubmit}>
           <Text accessibilityLabel={confirmationText} style={[styles.submitText, props.styling?.submitTextStyling]}>
             {confirmationText}
           </Text>
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );

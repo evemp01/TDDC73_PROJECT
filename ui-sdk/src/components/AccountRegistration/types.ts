@@ -1,4 +1,5 @@
-import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
+import { StyleProp, TextInputProps, ViewStyle } from "react-native";
+import { ButtonProps } from "../Button/types";
 import { PasswordRule, PasswordStrengthProps } from "../PasswordStrengthMeter/types";
 
 // Definition of a registration field
@@ -13,8 +14,9 @@ export type RegistrationField = TextInputProps & {
 // Styling options for the AccountRegistration component
 export type AccountRegistrationStyle = {
   containerStyling?: StyleProp<ViewStyle>;
-  submitButtonStyling?: StyleProp<ViewStyle>;
-  submitTextStyling?: StyleProp<TextStyle>;
+  // submitButtonStyling?: StyleProp<ViewStyle>;
+  // submitTextStyling?: StyleProp<TextStyle>;
+  submitButtonStyling?: ButtonProps;
   passwordStrengthStyling?: PasswordStrengthProps["style"];
 };
 

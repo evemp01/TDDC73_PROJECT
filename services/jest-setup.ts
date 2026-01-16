@@ -8,7 +8,6 @@ jest.mock("react-native-reanimated", () => {
   return Reanimated;
 });
 
-// Tysta ner kända varningar
 global.console.warn = (message: string) => {
   if (message.includes("Clickable element has no accessibility label")) return;
 };
