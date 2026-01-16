@@ -89,6 +89,6 @@ type AccountRegistrationProps = {
 | passwordRules               | Password rules the form should follow                                 |
 | confirmationText            | Have the text of the button say somethings else rather than `sign up` |
 | styling.containerStyling    | Styling of the main container                                         |
-| styling.submitButtonStyling | Styling of the submit button styling                                  |
+| styling.submitButtonStyling | Styling of the submit button                                          |
 | styling.submitTextStyling   | Styling of the button text                                            |
-| styling.onSubmit            | Function called when the form is submitted                            |
+| onSubmit                    | Function called when the form is submitted                            |
