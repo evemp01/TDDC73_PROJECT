@@ -32,19 +32,10 @@ const fields: RegistrationField[] = [
 ];
 
 // 2. Define password rules (imported or defined locally)
-const rules = [
-  { id: "len", label: "Min 8 chars", test: (p: string) => p.length >= 8 },
-];
+const rules = [{ id: "len", label: "Min 8 chars", test: (p: string) => p.length >= 8 }];
 
 export default function RegisterScreen() {
-  return (
-    <AccountRegistration
-      fields={fields}
-      passwordRules={rules}
-      onSubmit={(values) => console.log("Form submitted:", values)}
-      confirmationText="Register Now"
-    />
-  );
+  return <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log("Form submitted:", values)} confirmationText="Register Now" />;
 }
 ```
 
@@ -66,13 +57,13 @@ export default function RegisterScreen() {
 
 Defines the behavior and look of a single input field. This type extends React Native's `TextInputProps`, so you can also pass standard props like `maxLength`, `autoCorrect`, etc.
 
-| Property      | Type      | Description                                                              | Required |
-| :------------ | :-------- | :----------------------------------------------------------------------- | :------- |
-| `id`          | `string`  | Unique identifier for the field (used in the `values` object on submit). | Yes      |
-| `label`       | `string`  | The visible label above the input field.                                 | Yes      |
-| `type`        | `string`  | One of: `"text"`, `"date"`, or `"password"`.                             | Yes      |
-| `placeholder` | `string`  | Placeholder text shown when empty.                                       | No       |
-| `required`    | `boolean` | If true, the form cannot be submitted without this field. (Default: false)               | No       |
+| Property      | Type      | Description                                                                | Required |
+| :------------ | :-------- | :------------------------------------------------------------------------- | :------- |
+| `id`          | `string`  | Unique identifier for the field (used in the `values` object on submit).   | Yes      |
+| `label`       | `string`  | The visible label above the input field.                                   | Yes      |
+| `type`        | `string`  | One of: `"text"`, `"date"`, or `"password"`.                               | Yes      |
+| `placeholder` | `string`  | Placeholder text shown when empty.                                         | No       |
+| `required`    | `boolean` | If true, the form cannot be submitted without this field. (Default: false) | No       |
 
 ---
 

@@ -4,58 +4,63 @@ This repository contains the implementation of an interaction component SDK. The
 
 ## Features
 
-The SDK includes the following interaction patterns:
+The SDK (`ui-sdk`) includes the following interaction patterns and components:
 
-**Account Registration Component**
-A reusable form component for collecting user data (e.g. name, date of birth, password).  
-Each field can be configured as required or optional.
+- **Account Registration**: A reusable form component for collecting user data with configurable required fields.
 
-**Password Strength Meter**
-A stand-alone component for evaluating and displaying password strength.  
-Password rules are configurable and feedback is shown to the user.
+- **Password Strength Meter**: A stand-alone component for evaluating and displaying password strength based on custom rules.
+
+- **Layout Components**: `Row` and `Column` components for managing flexbox-based spacing and alignment.
+
+- **Button Component**: A flexible button system with multiple variants (`default`, `outline`, `link`).
+
+- **Card Component**: Structured containers with headers, titles, and content areas.
 
 ## Repository Structure
 
-```
+```bash
 TDDC73_PROJECT/
-├── app/
-├── components/
-│   ├── AccountRegistration/
-│   └── PasswordStrengthMeter/
-├── services/
-├── .gitignore
-├── README.md
-├── package.json
-├── tsconfig.json
-└── expo.config.js
+├── app/                     # Demo application (Expo Router)
+├── services/                # Testing setup and global services
+├── ui-sdk/                  # The interaction SDK package
+│   ├── src/
+│   │   ├── components/      # UI Components
+│   │   │   ├── AccountRegistration/
+│   │   │   ├── Button/
+│   │   │   ├── Card/
+│   │   │   ├── Layout/
+│   │   │   └── PasswordStrengthMeter/
+│   │   └── index.ts         # Public SDK exports
+│   └── package.json         # SDK-specific configuration
+├── package.json             # Root project configuration and dependencies
+├── tsconfig.json            # TypeScript configuration
+└── app.json                 # Expo configuration
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-Install dependencies:
-
 - Node.js (v16+ recommended)
 
-### Install
+### Installation
 
-Clone the repository:
+**Clone the repository:**
 
 ```bash
 git clone https://github.com/evemp01/TDDC73_PROJECT.git
 cd TDDC73_PROJECT
 ```
 
-#### Install dependencies
+**Install dependencies for the whole project:**
 
 ```bash
 npm install
 ```
 
-#### Running the App
+### Running the App
 
-Start the Expo development server:
+Start the Expo development server to see the components in action:
 
 ```bash
 npx expo start
@@ -63,10 +68,22 @@ npx expo start
 
 ## Using the SDK Components
 
-Using the [PasswordStrength component](components/PasswordStrengthMeter/README.MD).
+- **[Account Registration Documentation](ui-sdk/src/components/AccountRegistration/README.MD)**
 
-Using the [AccountRegistration component](components/AccountRegistration/README.MD).
+- **[Password Strength Meter Documentation](ui-sdk/src/components/PasswordStrengthMeter/README.MD)**
+
+- **[Button Documentation](ui-sdk/src/components/Button/README.MD)**
+
+- **[Card Documentation](ui-sdk/src/components/Card/README.MD)**
+
+- **[Layout Documentation](ui-sdk/src/components/Layout/README.MD)**
 
 ## Testing (Optional)
 
-UI tests demonstrating component correctness should be placed in a /tests directory.
+The project uses Jest and React Native Testing Library. Tests are located alongside their respective components.
+
+To run the test suite:
+
+```bash
+npm test
+```

@@ -1,43 +1,55 @@
-# Example integration of Button
+# Button Component
 
-Example code integration of the Button component:
+A flexible button component that supports multiple visual variants and handles internal states for press and disabled interactions.
+
+## Usage
 
 ```js
 import { Button, ButtonText } from "ui-sdk";
 
-// Normal/Default button
-function foo1() {
+// Default/Normal button
+function DefaultButton() {
   return (
-    <Button>
-      <ButtonText>Button 1</ButtonText>
+    <Button onPress={() => console.log("Pressed!")}>
+      <ButtonText>Click Me</ButtonText>
     </Button>
   );
 }
 
-// Outline button
-function foo1() {
+// Outline variant
+function OutlineButton() {
   return (
     <Button variant="outline">
-      <ButtonText>Button 1</ButtonText>
+      <ButtonText>Outline Button</ButtonText>
     </Button>
   );
 }
 
-// Link button
-function foo1() {
+// Disabled state
+function DisabledButton() {
   return (
-    <Button variant="link">
-      <ButtonText>Button 1</ButtonText>
-    </Button>
-  );
-}
-
-// Disabled prop
-function foo1() {
-  return (
-    <Button variant="default" disabled>
-      <ButtonText>Button 1</ButtonText>
+    <Button disabled>
+      <ButtonText>Cannot Click</ButtonText>
     </Button>
   );
 }
 ```
+
+## API Reference
+
+**`Button` Props**
+
+Inherits from React Native's `PressableProps`.
+
+| Prop     | Type                            | Description                                                         |
+| -------- | ------------------------------- | ------------------------------------------------------------------- |
+| variant  |  `"default", "outline", "link"` | Determines the visual style of the button. Defaults to `"default"`. |
+| disabled | boolean                         | If true, the button becomes inactive and visually faded.            |
+
+**`ButtonText` Props**
+
+Inherits from React Native's `TextProps`.
+
+| Prop    | Type                            | Description                                                                                       |
+| ------- | ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| variant |  `"default", "outline", "link"` | Matches text color with the button variant. Typically inherited from the parent `Button` context. |
