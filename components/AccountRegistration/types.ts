@@ -1,4 +1,4 @@
-import { PressableProps, StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
+import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
 import { PasswordRule, PasswordStrengthProps } from "../PasswordStrengthMeter/types";
 
 // Definition of a registration field

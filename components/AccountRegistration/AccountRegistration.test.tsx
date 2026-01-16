@@ -14,13 +14,14 @@ const mockRules = [
 ];
 
 describe("AccountRegistration UI-tests", () => {
-  test("Should render corrent number of fields and labels", () => {
+  test("Should render correct labels", () => {
     render(
       <AccountRegistration fields={mockFields} passwordRules={mockRules} onSubmit={jest.fn()} />
     );
 
     expect(screen.getByText("Username")).toBeTruthy();
     expect(screen.getByText("DOB")).toBeTruthy();
+    expect(screen.getByText("Password")).toBeTruthy();
   });
 
   test("Should call onSubmit with correct number of data when clicked", () => {

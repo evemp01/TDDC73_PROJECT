@@ -15,14 +15,6 @@ import { AccountRegistration } from "../components/AccountRegistration/AccountRe
  * @param required - Whether the field is required (default: false)
  * And any other properties related to text input (e.g., maxLength, styles and onChangeText)
  */
-const fieldStyling: TextInputProps["style"] = {
-  borderRadius: 100,
-  borderWidth: 1,
-  borderColor: "#2ecc71",
-  paddingHorizontal: 15,
-  paddingVertical: 10,
-};
-
 const fields: RegistrationField[] = [
   {
     id: "username1",
@@ -59,6 +51,16 @@ const fields: RegistrationField[] = [
   },
 ];
 
+// Custom styling for the input fields
+
+const fieldStyling: TextInputProps["style"] = {
+  borderRadius: 100,
+  borderWidth: 1,
+  borderColor: "#2ecc71",
+  paddingHorizontal: 15,
+  paddingVertical: 10,
+};
+
 const styledFields: RegistrationField[] = [
   {
     id: "username1",
@@ -66,6 +68,7 @@ const styledFields: RegistrationField[] = [
     placeholder: "Choose a username",
     type: "text",
     required: true,
+    maxLength: 12,
     style: fieldStyling,
   },
   {
@@ -123,13 +126,6 @@ const rules: PasswordRule[] = [
 
 export default function Index() {
   return (
-    // <View style={{ padding: 20 }}>
-    //   <AccountRegistration
-    //     fields={fields}
-    //     passwordRules={rules}
-    //     onSubmit={(values) => console.log(values)}
-    //   />
-    // </View>
     <ScrollView
       style={{ flex: 1, padding: 20 }}
       contentContainerStyle={{ paddingBottom: 50 }}>
@@ -197,12 +193,17 @@ export default function Index() {
 
           // Style the submit button
           submitButtonStyling: {
-            backgroundColor: "#27ae60", // Green button
+            backgroundColor: "#27ae60", 
             borderRadius: 50,
             paddingVertical: 15,
             marginTop: 20,
             borderWidth: 2,
             borderColor: "#2ecc71",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 5,
+            elevation: 8, // Shadow on Android
           },
 
           // Style the button text
@@ -222,11 +223,11 @@ export default function Index() {
               borderRadius: 8,
               marginTop: 15,
               borderLeftWidth: 4,
-              borderLeftColor: "#f1c40f", // Yellow border line
+              borderLeftColor: "#f1c40f", 
             },
             // The title "Password must"
             title: {
-              color: "#f1c40f", // Yellow text
+              color: "#f1c40f",
               fontSize: 14,
               fontWeight: "900",
               textTransform: "uppercase",
@@ -236,13 +237,13 @@ export default function Index() {
             ruleStyling: {
               // When the rule is passed
               textPassed: {
-                color: "#2ecc71", // Light green
+                color: "#2ecc71", 
                 fontWeight: "bold",
                 textDecorationLine: "line-through", // Strike through the text
               },
               // When the rule is FAILED
               textFailed: {
-                color: "#000000", // Grayish text
+                color: "#000000", 
               },
             },
           },
