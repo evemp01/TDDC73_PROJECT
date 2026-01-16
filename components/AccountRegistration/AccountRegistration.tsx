@@ -69,7 +69,7 @@ export function AccountRegistration({ confirmationText = "Sign Up", ...props }: 
 
         // Password fields
         else if (field.type === "password") {
-          return <PasswordFieldComponent {...commonProps} key={field.id} rules={props.passwordRules} testID={`input-${field.id}`} onChangeText={(value) => handleInputChange(field.id, value)} />;
+          return <PasswordFieldComponent {...commonProps} key={field.id} rules={props.passwordRules} testID={`input-${field.id}`} onChangeText={(value) => handleInputChange(field.id, value)} strengthStyle={props.styling?.passwordStrengthStyling} />;
         }
 
         // Date fields
@@ -105,15 +105,27 @@ function TextFieldComponent({ label, required, placeholder, value, onChangeText,
   );
 }
 
-function PasswordFieldComponent({ label, required, placeholder, value, onChangeText, rules, style, ...rest }: PasswordFieldProps) {
+function PasswordFieldComponent({ label, required, placeholder, value, onChangeText, rules, style, strengthStyle, ...rest }: PasswordFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
         {label}
         {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder} secureTextEntry={true} value={value} onChangeText={onChangeText} autoCapitalize="none" />
-      <PasswordStrengthMeter password={value ?? ""} rules={rules} />
+      <TextInput
+        {...rest}
+        style={[styles.input, style]}
+        placeholder={placeholder}
+        secureTextEntry={true}
+        value={value}
+        onChangeText={onChangeText}
+        autoCapitalize="none"
+      />
+      <PasswordStrengthMeter
+        password={value ?? ""}
+        rules={rules}
+        style={strengthStyle}
+      />
     </View>
   );
 }
@@ -125,7 +137,7 @@ function DateFieldComponent({ label, required, placeholder, value, onChangeText,
         {label}
         {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder || "YYYYMMDD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
+      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder || "YYYY-MM-DD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
     </View>
   );
 }
