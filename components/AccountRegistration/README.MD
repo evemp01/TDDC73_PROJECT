@@ -57,9 +57,9 @@ type RegistrationField = TextInputProps & {
 
 | Param Name  | Description                                      |
 | ----------- | ------------------------------------------------ |
-| ID          | Unique identifier for the field                  |
-| Label       | Label/Text for the field                         |
-| Placeholder | Placeholder text                                 |
+| id          | Unique identifier for the field                  |
+| label       | Label/Text for the field                         |
+| placeholder | Placeholder text                                 |
 | type        | Type of input                                    |
 | required    | Boolean for if the field is required in the form |
 
@@ -85,7 +85,7 @@ type AccountRegistrationProps = {
 
 | Param Name                  | Description                                                           |
 | --------------------------- | --------------------------------------------------------------------- |
-| Fields                      | The fields that the form should have                                  |
+| fields                      | The fields that the form should have                                  |
 | passwordRules               | Password rules the form should follow                                 |
 | confirmationText            | Have the text of the button say somethings else rather than `sign up` |
 | styling.containerStyling    | Styling of the main container                                         |
