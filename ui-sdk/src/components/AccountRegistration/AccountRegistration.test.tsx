@@ -9,25 +9,20 @@ const mockFields: RegistrationField[] = [
   { id: "pass", label: "Password", type: "password" },
 ];
 
-const mockRules = [
-  { id: "1", label: "Minimum password length is 5", test: (p: string) => p.length >= 5 },
-];
+const mockRules = [{ id: "1", label: "Minimum password length is 5", test: (p: string) => p.length >= 5 }];
 
 describe("AccountRegistration UI-tests", () => {
   test("Should render corrent number of fields and labels", () => {
-    render(
-      <AccountRegistration fields={mockFields} passwordRules={mockRules} onSubmit={jest.fn()} />
-    );
+    render(<AccountRegistration fields={mockFields} passwordRules={mockRules} onSubmit={jest.fn()} />);
 
     expect(screen.getByText("Username")).toBeTruthy();
     expect(screen.getByText("DOB")).toBeTruthy();
+    expect(screen.getByText("Password")).toBeTruthy();
   });
 
   test("Should call onSubmit with correct number of data when clicked", () => {
     const mockOnSubmit = jest.fn();
-    render(
-      <AccountRegistration fields={mockFields} passwordRules={mockRules} onSubmit={mockOnSubmit} />
-    );
+    render(<AccountRegistration fields={mockFields} passwordRules={mockRules} onSubmit={mockOnSubmit} />);
 
     // Input username and password
     fireEvent.changeText(screen.getByTestId("input-user"), "Göran");

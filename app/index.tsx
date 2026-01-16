@@ -73,7 +73,7 @@ const fields: RegistrationField[] = [
 
 const styledFields: RegistrationField[] = [
   {
-    id: "username1",
+    id: "username2",
     label: "Username",
     placeholder: "Choose a username",
     type: "text",
@@ -81,7 +81,7 @@ const styledFields: RegistrationField[] = [
     style: fieldStyling,
   },
   {
-    id: "name1",
+    id: "name2",
     label: "Name",
     placeholder: "Enter your full name",
     type: "text",
@@ -89,7 +89,7 @@ const styledFields: RegistrationField[] = [
     style: fieldStyling,
   },
   {
-    id: "email1",
+    id: "email2",
     label: "Email",
     placeholder: "example@mail.com",
     type: "text",
@@ -97,13 +97,13 @@ const styledFields: RegistrationField[] = [
     style: fieldStyling,
   },
   {
-    id: "dob1",
+    id: "dob2",
     label: "Date of Birth",
     type: "date",
     style: fieldStyling,
   },
   {
-    id: "p1",
+    id: "p2",
     label: "Password",
     placeholder: "Choose your password",
     type: "password",
@@ -254,9 +254,9 @@ export default function Index() {
                 styling={{ submitButtonStyling: { variant: "outline" } }}
                 onSubmit={(data) => console.log("Registreringsdata:", data)}
                 fields={[
-                  { id: "username", label: "Användarnamn", type: "text", required: true },
-                  { id: "email", label: "E-post", type: "text", required: true },
-                  { id: "password", label: "Lösenord", type: "password", required: true },
+                  { id: "username3", label: "Användarnamn", type: "text", required: true },
+                  { id: "email3", label: "E-post", type: "text", required: true },
+                  { id: "password3", label: "Lösenord", type: "password", required: true },
                 ]}
                 passwordRules={[{ id: "len", label: "Minst 8 tecken", test: (p) => p.length >= 8 }]}
               />
