@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 import { ButtonContext } from "./ButtonContext";
 import type { ButtonProps, ButtonTextProps, ButtonVariant } from "./types";
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   textLink: {
     color: "#1a1a1aff",
     borderBottomWidth: 3,
-    borderBottomColor: "1a1a1aff",
+    borderBottomColor: "#1a1a1aff",
   },
   textDisabled: {
     opacity: 0.9,
@@ -65,6 +65,12 @@ function Button({ children, variant = "default", style: userStyle, disabled, ...
   const variantStyle = buttonVariantStyle[variant];
 
   const composedStyle: ButtonProps["style"] = (state) => {
+    /**
+    
+    If its styled for clicks/presses etc
+
+    <Button style={({ pressed }) => ({ backgroundColor: pressed ? 'blue' : 'red' })} />
+    */
     const resolvedUserStyle = typeof userStyle === "function" ? userStyle(state) : userStyle;
 
     return [styles.buttonBase, variantStyle, disabled ? styles.buttonDisabled : null, state.pressed && !disabled ? styles.buttonPressed : null, resolvedUserStyle];
