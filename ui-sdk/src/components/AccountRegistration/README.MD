@@ -29,13 +29,7 @@ const fields: RegistrationField[] = [
 ];
 
 function Component() {
-  return (
-    <AccountRegistration
-      fields={fields}
-      passwordRules={rules}
-      onSubmit={(values) => console.log(values)}
-    />
-  );
+  return <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log(values)} />;
 }
 ```
 

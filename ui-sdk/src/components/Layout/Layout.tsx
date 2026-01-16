@@ -1,4 +1,4 @@
-import React, { Children, Fragment } from "react";
+import { Children, Fragment } from "react";
 import { View, ViewStyle } from "react-native";
 import { StackProps } from "./types";
 
@@ -8,12 +8,14 @@ function BaseStack({ children, spacing = 0, align = "flex-start", justify = "fle
   const renderChildren = () => {
     if (!legacy) return children;
 
-    const childArray = Children.toArray(children).filter(Boolean);
+    const items = Children.toArray(children);
+    const spacerStyle = isRow ? { width: spacing } : { height: spacing };
 
-    return childArray.map((child, index) => (
+    return items.map((child, index) => (
       <Fragment key={index}>
+        {/* Same as <></> just that we need the key prop */}
         {child}
-        {index < childArray.length - 1 && <View style={isRow ? { width: spacing } : { height: spacing }} />}
+        {index < items.length - 1 && <View style={spacerStyle} />}
       </Fragment>
     ));
   };
