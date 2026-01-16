@@ -43,11 +43,7 @@ export default function App() {
 | **style**    | `object`         | Custom styling for the container and rules.    | No       |
 | **icons**    | `object`         | Custom React nodes/icons for pass/fail states. | No       |
 
-### Configuration Objects
-
-#### `PasswordRule`
-
-Define the validation logic.
+### Configuration Objects (`PasswordRule`)
 
 | Property | Type                            | Description                                                           |
 | :------- | :------------------------------ | :-------------------------------------------------------------------- |
