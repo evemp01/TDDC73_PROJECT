@@ -72,7 +72,7 @@ function Button({ children, variant = "default", style: userStyle, disabled, ...
 
   return (
     <ButtonContext.Provider value={{ variant, disabled }}>
-      <Pressable {...props} disabled={disabled} accessibilityRole={props.accessibilityRole ?? "button"} style={composedStyle}>
+      <Pressable {...props} disabled={disabled} style={composedStyle}>
         {children}
       </Pressable>
     </ButtonContext.Provider>

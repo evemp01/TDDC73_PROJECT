@@ -95,6 +95,7 @@ export default function Index() {
           <Card>
             <CardContent style={{ paddingTop: 20 }}>
               <AccountRegistration
+                submitButtonProps={{ variant: "outline" }}
                 onSubmit={(data) => console.log("Registreringsdata:", data)}
                 fields={[
                   { id: "username", label: "Användarnamn", type: "text", required: true },

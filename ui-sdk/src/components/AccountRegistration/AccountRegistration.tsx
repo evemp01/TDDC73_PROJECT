@@ -2,10 +2,10 @@ import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Button, ButtonText } from "../Button/Button";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
-import { AccountRegistrationProps, PasswordFieldProps, TextFieldProps } from "./types";
+import { AccountRegistrationProps, PasswordFieldProps, RegistrationField } from "./types";
 
 // Main component for account registration form
-export function AccountRegistration({ confirmationText = "Sign Up", ...props }: AccountRegistrationProps) {
+export function AccountRegistration({ confirmationText = "Sign Up", submitButtonProps, ...props }: AccountRegistrationProps) {
   // State to hold form data and error messages
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState("");
@@ -84,7 +84,7 @@ export function AccountRegistration({ confirmationText = "Sign Up", ...props }: 
 
       <View style={styles.buttonContainer}>
         <Text style={styles.errorText}>{errorMessage}</Text>
-        <Button onPress={() => handleSubmit}>
+        <Button onPress={handleSubmit} testID="submit-button" {...submitButtonProps}>
           <ButtonText>{confirmationText}</ButtonText>
         </Button>
         {/* <Pressable
@@ -102,39 +102,39 @@ export function AccountRegistration({ confirmationText = "Sign Up", ...props }: 
   );
 }
 
-function TextFieldComponent({ field, value, onChangeText, style, ...rest }: TextFieldProps) {
+function TextFieldComponent({ label, placeholder, required, value, onChangeText, style, ...rest }: RegistrationField) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
-        {field.label}
-        {field.required && <Text style={{ color: "red" }}> *</Text>}
+        {label}
+        {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput {...rest} placeholder={field.placeholder} style={[styles.input, style]} value={value} onChangeText={onChangeText} autoCapitalize="none" />
+      <TextInput {...rest} placeholder={placeholder} style={[styles.input, style]} value={value} onChangeText={onChangeText} autoCapitalize="none" />
     </View>
   );
 }
 
-function PasswordFieldComponent({ field, value, onChangeText, rules, style, ...rest }: PasswordFieldProps) {
+function PasswordFieldComponent({ label, required, placeholder, value, onChangeText, rules, style, ...rest }: PasswordFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
-        {field.label}
-        {field.required && <Text style={{ color: "red" }}> *</Text>}
+        {label}
+        {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput {...rest} style={[styles.input, style]} placeholder={field.placeholder} secureTextEntry={true} value={value} onChangeText={onChangeText} autoCapitalize="none" />
+      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder} secureTextEntry={true} value={value} onChangeText={onChangeText} autoCapitalize="none" />
       <PasswordStrengthMeter password={value ?? ""} rules={rules} />
     </View>
   );
 }
 
-function DateFieldComponent({ field, value, onChangeText, style, ...rest }: TextFieldProps) {
+function DateFieldComponent({ label, required, placeholder, value, onChangeText, style, ...rest }: RegistrationField) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
-        {field.label}
-        {field.required && <Text style={{ color: "red" }}> *</Text>}
+        {label}
+        {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput {...rest} style={[styles.input, style]} placeholder={field.placeholder || "YYYYMMDD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
+      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder || "YYYYMMDD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
     </View>
   );
 }
