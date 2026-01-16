@@ -1,26 +1,29 @@
-# Using the AccountRegistration form
+# Account Registration Component
 
-Example: Using the AccountRegistration form:
+Form that handles input fields and password strength checking.
 
-```js
-import { AccountRegistration } from "../components/AccountRegistration";
+## Usage
+
+```tsx
+import { AccountRegistration } from "../components/AccountRegistration/AccountRegistration";
 import { RegistrationField } from "../components/AccountRegistration/types";
 
+// 1. Define the fields
 const fields: RegistrationField[] = [
   {
-    id: "username1",
+    id: "username",
     label: "Username",
     placeholder: "Choose a username",
     type: "text",
     required: true,
   },
   {
-    id: "dob1",
+    id: "dob",
     label: "Date of Birth",
     type: "date",
   },
   {
-    id: "p1",
+    id: "password",
     label: "Password",
     placeholder: "Choose your password",
     type: "password",
@@ -28,61 +31,77 @@ const fields: RegistrationField[] = [
   },
 ];
 
-function Component() {
-  return <AccountRegistration fields={fields} passwordRules={rules} onSubmit={(values) => console.log(values)} />;
+// 2. Define password rules (imported or defined locally)
+const rules = [
+  { id: "len", label: "Min 8 chars", test: (p: string) => p.length >= 8 },
+];
+
+export default function RegisterScreen() {
+  return (
+    <AccountRegistration
+      fields={fields}
+      passwordRules={rules}
+      onSubmit={(values) => console.log("Form submitted:", values)}
+      confirmationText="Register Now"
+    />
+  );
 }
 ```
 
-## Params and Types
+## API Reference
 
-### Input fields
+### Main Props (`AccountRegistrationProps`)
 
-Params for the fields:
+| Prop                 | Type                  | Description                                                                                              | Required |
+| :------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------- | :------- |
+| **fields**           | `RegistrationField[]` | Configuration array for all input fields.                                                                | Yes      |
+| **passwordRules**    | `PasswordRule[]`      | Array of rules for the password strength meter.                                                          | Yes      |
+| **onSubmit**         | `(values) => void`    | Callback function called when the form is valid and submitted. Returns an object with field IDs as keys. | Yes      |
+| **confirmationText** | `string`              | Custom text for the submit button (default: "Sign Up").                                                  | No       |
+| **styling**          | `object`              | Custom styling object for the form and its children.                                                     | No       |
+
+### Configuration Objects
+
+#### `RegistrationField`
+
+Defines the behavior and look of a single input field. This type extends React Native's `TextInputProps`, so you can also pass standard props like `maxLength`, `autoCorrect`, etc.
+
+| Property      | Type      | Description                                                              | Required |
+| :------------ | :-------- | :----------------------------------------------------------------------- | :------- |
+| `id`          | `string`  | Unique identifier for the field (used in the `values` object on submit). | Yes      |
+| `label`       | `string`  | The visible label above the input field.                                 | Yes      |
+| `type`        | `string`  | One of: `"text"`, `"date"`, or `"password"`.                             | Yes      |
+| `placeholder` | `string`  | Placeholder text shown when empty.                                       | No       |
+| `required`    | `boolean` | If true, the form cannot be submitted without this field. (Default: false)               | No       |
+
+---
+
+## Customization
+
+### Styling (`styling`)
+
+The `styling` prop accepts an object to customize specific parts of the form.
 
 ```ts
-type RegistrationField = TextInputProps & {
-  id: string;
-  label: string;
-  placeholder?: string;
-  type: "text" | "date" | "password";
-  required?: boolean;
+type AccountRegistrationStyle = {
+  containerStyling?: StyleProp<ViewStyle>; // Main wrapper style
+  submitButtonStyling?: StyleProp<ViewStyle>; // Submit button style
+  submitTextStyling?: StyleProp<TextStyle>; // Submit button text style
+  passwordStrengthStyling?: PasswordStrengthStyle; // Styling for the nested password meter
 };
 ```
 
-| Param Name  | Description                                      |
-| ----------- | ------------------------------------------------ |
-| ID          | Unique identifier for the field                  |
-| Label       | Label/Text for the field                         |
-| Placeholder | Placeholder text                                 |
-| type        | Type of input                                    |
-| required    | Boolean for if the field is required in the form |
+#### Example
 
-And since it extends TextInputProps, you can also input stuff such as style, maxLength or any other prop that is apart of the [textinput props](https://reactnative.dev/docs/textinput).
-
-### Form
-
-Params for the form/Account registration form
-
-```ts
-type AccountRegistrationProps = {
-  fields: RegistrationField[];
-  passwordRules: PasswordRule[];
-  confirmationText?: string;
-  styling?: {
-    containerStyling?: StyleProp<ViewStyle>;
-    submitButtonStyling?: StyleProp<PressableProps>;
-    submitTextStyling?: StyleProp<TextStyle>;
-  };
-  onSubmit: (values: Record<string, string>) => void;
-};
+```js
+<AccountRegistration
+  fields={fields}
+  passwordRules={rules}
+  onSubmit={handleSubmit}
+  styling={{
+    containerStyling: { padding: 20, backgroundColor: "#fff" },
+    submitButtonStyling: { backgroundColor: "blue", borderRadius: 8 },
+    submitTextStyling: { fontSize: 18, fontWeight: "bold" },
+  }}
+/>
 ```
-
-| Param Name                  | Description                                                           |
-| --------------------------- | --------------------------------------------------------------------- |
-| Fields                      | The fields that the form should have                                  |
-| passwordRules               | Password rules the form should follow                                 |
-| confirmationText            | Have the text of the button say somethings else rather than `sign up` |
-| styling.containerStyling    | Styling of the main container                                         |
-| styling.submitButtonStyling | Styling of the submit button styling                                  |
-| styling.submitTextStyling   | Styling of the button text                                            |
-| styling.onSubmit            | Function called when the form is submitted                            |

@@ -5,7 +5,7 @@ import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrength
 import { AccountRegistrationProps, PasswordFieldProps, RegistrationField } from "./types";
 
 // Main component for account registration form
-export function AccountRegistration({ confirmationText = "Sign Up", submitButtonProps, ...props }: AccountRegistrationProps) {
+export function AccountRegistration({ confirmationText = "Sign Up", ...props }: AccountRegistrationProps) {
   // State to hold form data and error messages
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState("");
@@ -70,7 +70,16 @@ export function AccountRegistration({ confirmationText = "Sign Up", submitButton
 
         // Password fields
         else if (field.type === "password") {
-          return <PasswordFieldComponent {...commonProps} key={field.id} rules={props.passwordRules} testID={`input-${field.id}`} onChangeText={(value) => handleInputChange(field.id, value)} />;
+          return (
+            <PasswordFieldComponent
+              {...commonProps}
+              key={field.id}
+              rules={props.passwordRules}
+              testID={`input-${field.id}`}
+              onChangeText={(value) => handleInputChange(field.id, value)}
+              strengthStyle={props.styling?.passwordStrengthStyling}
+            />
+          );
         }
 
         // Date fields
@@ -84,16 +93,11 @@ export function AccountRegistration({ confirmationText = "Sign Up", submitButton
 
       <View style={styles.buttonContainer}>
         <Text style={styles.errorText}>{errorMessage}</Text>
-        <Button onPress={handleSubmit} testID="submit-button" {...submitButtonProps}>
+        <Button testID="submit-button" onPress={handleSubmit} {...props.styling?.submitButtonStyling}>
           <ButtonText>{confirmationText}</ButtonText>
         </Button>
-        {/* <Pressable
-          testID="submit-button"
-          style={[styles.submitButton, props.styling?.submitButtonStyling]}
-          onPress={handleSubmit}>
-          <Text
-            accessibilityLabel={confirmationText}
-            style={[styles.submitText, props.styling?.submitTextStyling]}>
+        {/* <Pressable testID="submit-button" style={[styles.submitButton, props.styling?.submitButtonStyling]} onPress={handleSubmit}>
+          <Text accessibilityLabel={confirmationText} style={[styles.submitText, props.styling?.submitTextStyling]}>
             {confirmationText}
           </Text>
         </Pressable> */}
@@ -102,7 +106,7 @@ export function AccountRegistration({ confirmationText = "Sign Up", submitButton
   );
 }
 
-function TextFieldComponent({ label, placeholder, required, value, onChangeText, style, ...rest }: RegistrationField) {
+function TextFieldComponent({ label, required, placeholder, value, onChangeText, style, ...rest }: RegistrationField) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
@@ -114,7 +118,7 @@ function TextFieldComponent({ label, placeholder, required, value, onChangeText,
   );
 }
 
-function PasswordFieldComponent({ label, required, placeholder, value, onChangeText, rules, style, ...rest }: PasswordFieldProps) {
+function PasswordFieldComponent({ label, required, placeholder, value, onChangeText, rules, style, strengthStyle, ...rest }: PasswordFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
@@ -122,7 +126,7 @@ function PasswordFieldComponent({ label, required, placeholder, value, onChangeT
         {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
       <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder} secureTextEntry={true} value={value} onChangeText={onChangeText} autoCapitalize="none" />
-      <PasswordStrengthMeter password={value ?? ""} rules={rules} />
+      <PasswordStrengthMeter password={value ?? ""} rules={rules} style={strengthStyle} />
     </View>
   );
 }
@@ -134,7 +138,7 @@ function DateFieldComponent({ label, required, placeholder, value, onChangeText,
         {label}
         {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder || "YYYYMMDD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
+      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder || "YYYY-MM-DD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
     </View>
   );
 }
