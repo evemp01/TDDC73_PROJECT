@@ -24,11 +24,6 @@ export type AccountRegistrationProps = {
 };
 
 // Props for password fields
-export type PasswordFieldProps = TextFieldProps & {
+export type PasswordFieldProps = RegistrationField & {
   rules: PasswordRule[];
-};
-
-// Props for text fields
-export type TextFieldProps = TextInputProps & {
-  field: RegistrationField;
 };

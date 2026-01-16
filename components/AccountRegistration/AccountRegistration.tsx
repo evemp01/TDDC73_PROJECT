@@ -1,18 +1,10 @@
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { PasswordStrengthMeter } from "../PasswordStrengthMeter/PasswordStrengthMeter";
-import {
-  AccountRegistrationProps,
-  PasswordFieldProps,
-  TextFieldProps,
-} from "./types";
+import { AccountRegistrationProps, PasswordFieldProps, RegistrationField } from "./types";
 
 // Main component for account registration form
-export function AccountRegistration({
-  confirmationText = "Sign Up",
-  ...props
-}: AccountRegistrationProps) {
-
+export function AccountRegistration({ confirmationText = "Sign Up", ...props }: AccountRegistrationProps) {
   // State to hold form data and error messages
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [errorMessage, setErrorMessage] = useState("");
@@ -28,9 +20,7 @@ export function AccountRegistration({
   // Function to handle form submission
   const handleSubmit = () => {
     // Find all required fields that are missing
-    const missingFields = props.fields.filter(
-      (field) => field.required && !formData[field.id]
-    );
+    const missingFields = props.fields.filter((field) => field.required && !formData[field.id]);
 
     // If there are missing required fields, set an error message
     if (missingFields.length > 0) {
@@ -45,15 +35,11 @@ export function AccountRegistration({
     // If a password field exists, validate it against the provided rules
     if (passwordField) {
       const passwordValue = formData[passwordField.id] || "";
-      const brokenRules = props.passwordRules.filter(
-        (rule) => !rule.test(passwordValue)
-      );
+      const brokenRules = props.passwordRules.filter((rule) => !rule.test(passwordValue));
 
       if (brokenRules.length > 0) {
         const errorMessages = brokenRules.map((r) => r.label).join("\n");
-        setErrorMessage(
-          `Password is too weak, these rules are not met: ${errorMessages}`
-        );
+        setErrorMessage(`Password is too weak, these rules are not met: ${errorMessages}`);
         return;
       }
     }
@@ -78,41 +64,17 @@ export function AccountRegistration({
 
         // Text fields
         if (field.type === "text") {
-          return (
-            <TextFieldComponent
-              {...commonProps}
-              key={field.id}
-              onChangeText={(value) => handleInputChange(field.id, value)}
-              testID={`input-${field.id}`}
-            />
-          );
+          return <TextFieldComponent {...commonProps} key={field.id} onChangeText={(value) => handleInputChange(field.id, value)} testID={`input-${field.id}`} />;
         }
 
         // Password fields
         else if (field.type === "password") {
-          return (
-            <PasswordFieldComponent
-              {...commonProps}
-              key={field.id}
-              rules={props.passwordRules}
-              testID={`input-${field.id}`}
-              onChangeText={(value) => handleInputChange(field.id, value)}
-            />
-          );
+          return <PasswordFieldComponent {...commonProps} key={field.id} rules={props.passwordRules} testID={`input-${field.id}`} onChangeText={(value) => handleInputChange(field.id, value)} />;
         }
 
         // Date fields
         else if (field.type === "date") {
-          return (
-            <DateFieldComponent
-              {...commonProps}
-              key={field.id}
-              testID={`input-${field.id}`}
-              onChangeText={(value) =>
-                handleInputChange(field.id, handleDateChange(value))
-              }
-            />
-          );
+          return <DateFieldComponent {...commonProps} key={field.id} testID={`input-${field.id}`} onChangeText={(value) => handleInputChange(field.id, handleDateChange(value))} />;
         } else {
           console.error(`Unknown field type: ${field.type}`);
           return null;
@@ -121,13 +83,8 @@ export function AccountRegistration({
 
       <View style={styles.buttonContainer}>
         <Text style={styles.errorText}>{errorMessage}</Text>
-        <Pressable
-          testID="submit-button"
-          style={[styles.submitButton, props.styling?.submitButtonStyling]}
-          onPress={handleSubmit}>
-          <Text
-            accessibilityLabel={confirmationText}
-            style={[styles.submitText, props.styling?.submitTextStyling]}>
+        <Pressable testID="submit-button" style={[styles.submitButton, props.styling?.submitButtonStyling]} onPress={handleSubmit}>
+          <Text accessibilityLabel={confirmationText} style={[styles.submitText, props.styling?.submitTextStyling]}>
             {confirmationText}
           </Text>
         </Pressable>
@@ -136,81 +93,39 @@ export function AccountRegistration({
   );
 }
 
-function TextFieldComponent({
-  field,
-  value,
-  onChangeText,
-  style,
-  ...rest
-}: TextFieldProps) {
+function TextFieldComponent({ label, required, placeholder, value, onChangeText, style, ...rest }: RegistrationField) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
-        {field.label}
-        {field.required && <Text style={{ color: "red" }}> *</Text>}
+        {label}
+        {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput
-        {...rest}
-        placeholder={field.placeholder}
-        style={[styles.input, style]}
-        value={value}
-        onChangeText={onChangeText}
-        autoCapitalize="none"
-      />
+      <TextInput {...rest} placeholder={placeholder} style={[styles.input, style]} value={value} onChangeText={onChangeText} autoCapitalize="none" />
     </View>
   );
 }
 
-function PasswordFieldComponent({
-  field,
-  value,
-  onChangeText,
-  rules,
-  style,
-  ...rest
-}: PasswordFieldProps) {
+function PasswordFieldComponent({ label, required, placeholder, value, onChangeText, rules, style, ...rest }: PasswordFieldProps) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
-        {field.label}
-        {field.required && <Text style={{ color: "red" }}> *</Text>}
+        {label}
+        {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput
-        {...rest}
-        style={[styles.input, style]}
-        placeholder={field.placeholder}
-        secureTextEntry={true}
-        value={value}
-        onChangeText={onChangeText}
-        autoCapitalize="none"
-      />
+      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder} secureTextEntry={true} value={value} onChangeText={onChangeText} autoCapitalize="none" />
       <PasswordStrengthMeter password={value ?? ""} rules={rules} />
     </View>
   );
 }
 
-function DateFieldComponent({
-  field,
-  value,
-  onChangeText,
-  style,
-  ...rest
-}: TextFieldProps) {
+function DateFieldComponent({ label, required, placeholder, value, onChangeText, style, ...rest }: RegistrationField) {
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.label}>
-        {field.label}
-        {field.required && <Text style={{ color: "red" }}> *</Text>}
+        {label}
+        {required && <Text style={{ color: "red" }}> *</Text>}
       </Text>
-      <TextInput
-        {...rest}
-        style={[styles.input, style]}
-        placeholder={field.placeholder || "YYYYMMDD"}
-        keyboardType="numeric"
-        value={value}
-        onChangeText={onChangeText}
-        maxLength={10}
-      />
+      <TextInput {...rest} style={[styles.input, style]} placeholder={placeholder || "YYYYMMDD"} keyboardType="numeric" value={value} onChangeText={onChangeText} maxLength={10} />
     </View>
   );
 }
@@ -220,7 +135,7 @@ const handleDateChange = (text: string) => {
   const cleaned = text.replace(/\D/g, "");
 
   let formatted = cleaned;
-  
+
   // Add dash after year
   if (cleaned.length > 4) {
     formatted = `${cleaned.slice(0, 4)}-${cleaned.slice(4)}`;
